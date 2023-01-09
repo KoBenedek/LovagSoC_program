@@ -43,8 +43,14 @@ PATH_TO_BUILD = $(PROJECT_ROOT)/build
 PATH_TO_OBJS = $(PROJECT_ROOT)/Device
 
 STARTUP = LovagSoC_startup.S
-INCS = -I ./Device
-SRCS = main.c
+
+INCS += 								\
+	-I ./Device							\
+	-I ./Code/SPI
+
+SRCS +=									\
+	main.c								\
+	SPI/SPI.c
 
 OUTPUT = LovagSoC_program
 
@@ -64,8 +70,11 @@ $(OBJS):
 $(ASM_OBJ):
 	@$(ASMC) $(ASMCFLAGS) $(subst .o,.S,$@) -o $(PATH_TO_OBJS)/$(notdir $@)
 
+OBJS_PATH = $(addprefix $(PATH_TO_OBJS)/, $(notdir $(OBJS)))
+ASM_OBJ_PATH = $(addprefix $(PATH_TO_OBJS)/, $(notdir $(ASM_OBJ)))
+
 $(OUTPUT).elf: $(ASM_OBJ) $(OBJS) directory
-	@$(LD) $(PATH_TO_OBJS)/$(notdir $(ASM_OBJ)) $(PATH_TO_OBJS)/$(notdir $(OBJS)) -o $(PATH_TO_BUILD)/$@ -T $(PATH_TO_LD)/$(ASM_LINKER).ld $(LDFLAGS)
+	@$(LD) $(ASM_OBJ_PATH) $(OBJS_PATH) -o $(PATH_TO_BUILD)/$@ -T $(PATH_TO_LD)/$(ASM_LINKER).ld $(LDFLAGS)
 
 $(OUTPUT).bin: $(OUTPUT).elf
 	@$(OBJCOPY) $(PATH_TO_BUILD)/$(OUTPUT).elf $(PATH_TO_BUILD)/$@ -O binary
@@ -83,18 +92,18 @@ program:
 	@python3 upload_prog.py
 
 view-o: $(OUTPUT).elf
-	@$(OBJDUMP) -d $(PATH_TO_OBJS)/$(notdir $(ASM_OBJ)) $(PATH_TO_OBJS)/$(notdir $(OBJS))
-	@-rm $(PATH_TO_OBJS)/$(notdir $(OBJS))
-	@-rm $(PATH_TO_OBJS)/$(notdir $(ASM_OBJ))
+	@$(OBJDUMP) -d $(ASM_OBJ_PATH) $(OBJS_PATH)
+	@-rm $(OBJS_PATH)
+	@-rm $(ASM_OBJ_PATH)
 
 view-elf: $(OUTPUT).elf
 	@$(OBJDUMP) -D $(PATH_TO_BUILD)/$(OUTPUT).elf
-	@-rm $(PATH_TO_OBJS)/$(notdir $(OBJS))
-	@-rm $(PATH_TO_OBJS)/$(notdir $(ASM_OBJ))
+	@-rm $(OBJS_PATH)
+	@-rm $(ASM_OBJ_PATH)
 
 remove-temp:
-	@-rm $(PATH_TO_OBJS)/$(notdir $(OBJS))
-	@-rm $(PATH_TO_OBJS)/$(notdir $(ASM_OBJ))
+	@-rm $(OBJS_PATH)
+	@-rm $(ASM_OBJ_PATH)
 
 clean:
 	@-rm -rf $(PATH_TO_BUILD)
