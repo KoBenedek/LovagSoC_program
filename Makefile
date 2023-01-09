@@ -26,9 +26,9 @@ ASM_LINKER = linker
 #Memory map
 MAP = $(OUTPUT).map
 
-ASMCFLAGS = -march=rv32i -mabi=ilp32
-CCFLAGS = -march=rv32i -mabi=ilp32 $(INCS)
-LDFLAGS = -m elf32lriscv -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
+ASMCFLAGS = -march=rv32i -mabi=ilp32 -mno-relax
+CCFLAGS = -march=rv32i -mabi=ilp32 -mno-relax -g -Os $(INCS)
+LDFLAGS = -m elf32lriscv -no-relax -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
 E2HFLAGS= --bit-width 32
 # -mno-relax
 # -no-relax
@@ -46,11 +46,15 @@ STARTUP = LovagSoC_startup.S
 
 INCS += 								\
 	-I ./Device							\
-	-I ./Code/SPI
+	-I ./Code/SPI						\
+	-I ./Code/DRV8305					\
+	-I ./Code/ADC120IPT
 
 SRCS +=									\
 	main.c								\
-	SPI/SPI.c
+	SPI/SPI.c							\
+	DRV8305/DRV8305.c					\
+	ADC120IPT/ADC120IPT.c
 
 OUTPUT = LovagSoC_program
 

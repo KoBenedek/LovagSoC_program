@@ -96,42 +96,6 @@ uint32_t SPI_Tx_32bit(uint32_t TxData)
 /**
  * @brief 
  * 
- * @return uint8_t 
- */
-uint8_t SPI_Rx_8bit(void)
-{
-	SPI->DAT.reg8 = 0;
-	while(SPI->CTRL.bit.BUSY);
-	return SPI->DAT.reg8;
-}
-
-/**
- * @brief 
- * 
- * @return uint16_t 
- */
-uint16_t SPI_Rx_16bit(void)
-{
-	SPI->DAT.reg16 = 0;
-	while(SPI->CTRL.bit.BUSY);
-	return SPI->DAT.reg16;/** TODO:DOES NOT WORK!!! WHY? */
-}
-
-/**
- * @brief 
- * 
- * @return uint32_t 
- */
-uint32_t SPI_Rx_32bit(void)
-{
-	SPI->DAT.reg32 = 0;
-	while(SPI->CTRL.bit.BUSY);
-	return SPI->DAT.reg32;
-}
-
-/**
- * @brief 
- * 
  * @param CSLine 
  */
 void SPI_ChipSelect(SPIChipSel_t CSLine)
@@ -139,11 +103,11 @@ void SPI_ChipSelect(SPIChipSel_t CSLine)
 	switch (CSLine)
 	{
 	case SPI_CS1:
-		GPIO->PORT0.bit.PIN17 = 0u;
+		GPIO->PORT0.bit.PIN16 = 0u;
 	break;
 
 	case SPI_CS2:
-		GPIO->PORT0.bit.PIN16 = 0u;
+		GPIO->PORT0.bit.PIN17 = 0u;
 	break;
 	
 	default:
@@ -162,11 +126,11 @@ void SPI_ChipDeselect(SPIChipSel_t CSLine)
 	{
 
 	case SPI_CS1:
-		GPIO->PORT0.bit.PIN17 = 1u;
+		GPIO->PORT0.bit.PIN16 = 1u;
 	break;
 
 	case SPI_CS2:
-		GPIO->PORT0.bit.PIN16 = 1u;
+		GPIO->PORT0.bit.PIN17 = 1u;
 	break;
 	
 	default:

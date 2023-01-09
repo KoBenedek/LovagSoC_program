@@ -29,18 +29,14 @@ typedef enum
     Config_DRV8305 = 1
 } SPIConfig_t;
 
-void SPI_Init(void);
-void SPI_SetConfig(SPIConfig_t NewConfig);
+void        SPI_Init(void);
+void        SPI_SetConfig(SPIConfig_t NewConfig);
 
 uint8_t     SPI_Tx_8bit(uint8_t TxData);
 uint16_t    SPI_Tx_16bit(uint16_t TxData);
 uint32_t    SPI_Tx_32bit(uint32_t TxData);
 
-uint8_t     SPI_Rx_8bit(void);
-uint16_t    SPI_Rx_16bit(void);
-uint32_t    SPI_Rx_32bit(void);
-
-void SPI_ChipSelect(SPIChipSel_t CSLine);
-void SPI_ChipDeselect(SPIChipSel_t CSLine);
+void        SPI_ChipSelect(SPIChipSel_t CSLine);
+void        SPI_ChipDeselect(SPIChipSel_t CSLine);
 
 #endif /* SPI_H_ */
