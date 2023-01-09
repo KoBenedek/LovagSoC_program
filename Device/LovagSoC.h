@@ -31,6 +31,118 @@
 
 typedef struct
 {
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			__IOM uint16_t BEMF_FILT_CYCLES	: 7;
+			__IOM uint16_t BEMF_FILT_EN		: 1;
+            __IOM uint16_t PWM_SYNC         : 2;
+            __IOM uint16_t DEMAG_EN         : 2;
+            __IM  uint16_t POS_PTRN         : 3;
+            __IOM uint16_t HALL_EN          : 1;
+		} bit;
+	} PDR;
+
+	union
+	{
+		__IM uint16_t reg;
+
+		struct 
+		{
+			__IM uint16_t ZC_PD			 	: 16;
+		} bit;
+	} ZC_PR;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+				  uint16_t					: 6;
+			__IOM uint16_t COAST_LOCK_CNT	: 5;
+            __IOM uint16_t EN_CTRL_MOT_EN   : 1;
+            __IOM uint16_t SYNC_MOT_MODE    : 1;
+            __IOM uint16_t MOT_BREAK        : 1;
+            __IOM uint16_t MOT_DIR          : 1;
+            __IOM uint16_t MOT_EN           : 1;
+		} bit;
+	} CCONR1;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			__IOM uint16_t BREAK_LENGTH		: 5;
+            __IOM uint16_t DEMAG_PERIOD     : 3;
+            __IOM uint16_t COMM_TIM_PSC    	: 8;
+		} bit;
+	} CCONR2;
+
+    union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+            __IOM uint16_t OL_RAMP_FINAL    : 13;
+            __IOM uint16_t OL_RAMP_CONST    : 3;
+		} bit;
+	} OLRR1;
+
+    union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+            __IOM uint16_t OL_RAMP_START    : 16;
+		} bit;
+	} OLRR2;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+            __IOM uint16_t COAST_LOCK_PR    : 16;
+		} bit;
+	} OLRR3;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			__IOM uint16_t PWM_DC			: 9;
+			__IOM uint16_t PWM_TIM_PSC		: 6;
+			__IOM uint16_t PWM_INT_GEN		: 1;
+		} bit;
+	} PWMCR;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+				  uint16_t					: 9;
+			__IOM uint16_t FET_STATES		: 6;
+			__IOM uint16_t FET_ATOMIC_SET	: 1;
+		} bit;
+	} OCR;
+
+} MotVez_Typedef;
+
+typedef struct
+{
     union
     {
 		__IOM uint32_t reg32;
@@ -98,9 +210,11 @@ typedef struct
     } DAT;
 } SPI_Typedef;
 
+#define MOTVEZ_BASE 0x1002U
 #define GPIO_BASE   0x1080U
 #define SPI_BASE    0x1084U
 
+#define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
 #define SPI         ((SPI_Typedef*)SPI_BASE)
 
