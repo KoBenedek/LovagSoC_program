@@ -10,6 +10,10 @@
  *                  DRV8305 FET driver IC.
  */
 
+/*
+ *    PIN18   -   DRV8305 Enable pin
+ */
+
 #include "DRV8305.h"
 #include "LovagSoC.h"
 
@@ -21,6 +25,7 @@ DRV8305_Typedef DRV8305_Device;
  */
 void DRV8305_Init(void)
 {
+    DRV8305_Disable();
     DRV8305_Read(DRV8305_WNWR);
     DRV8305_Read(DRV8305_VDSF);
     DRV8305_Read(DRV8305_ICFR);
@@ -38,19 +43,13 @@ void DRV8305_Init(void)
  * @brief 
  * 
  */
-void DRV8305_Enable(void)
-{
-
-}
+void DRV8305_Enable(void) { GPIO->PORT0.bit.PIN18 = 1u; }
 
 /**
  * @brief 
  * 
  */
-void DRV8305_Disable(void)
-{
-
-}
+void DRV8305_Disable(void) { GPIO->PORT0.bit.PIN18 = 0u; }
 
 /**
  * @brief 
@@ -58,10 +57,7 @@ void DRV8305_Disable(void)
  * @return true 
  * @return false 
  */
-bool DRV8305_Enabled(void)
-{
-
-}
+bool DRV8305_Enabled(void) { return GPIO->PORT0.bit.PIN18; }
 
 /**
  * @brief 
@@ -69,8 +65,10 @@ bool DRV8305_Enabled(void)
  */
 void DRV8305_ErrorClear(void)
 {
+    bool prev_state = DRV8305_Enabled();
     DRV8305_Disable();
     DRV8305_Enable();
+    if(false == prev_state)  DRV8305_Disable();
 }
 
 /**

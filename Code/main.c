@@ -12,6 +12,7 @@
 
 #include "LovagSoC.h"
 #include "SPI.h"
+#include "Motor.h"
 #include "DRV8305.h"
 #include "ADC120IPT.h"
 
@@ -19,33 +20,31 @@ void ElsoFuggveny(void);
 
 int main(void)
 {
-    MOTVEZ->CCONR1.bit.MOT_EN = 0u;
-    GPIO->PORT0.bit.PIN20 = false;
-    GPIO->PORT0.bit.PIN18 = false;
-    GPIO->PORT0.bit.PIN18 = true;
-    GPIO->PORT0.bit.PIN18 = false;
+    Motor_Init();
     SPI_Init();
     DRV8305_Init();
-    while(DRV8305->WNWR.bit.FAULT == true)
-    {
-        DRV8305_Read(DRV8305_WNWR);
-    }
-    GPIO->PORT0.bit.PIN18 = true;
-    MOTVEZ->CCONR1.bit.MOT_EN = 1u;
+
+    DRV8305_ErrorClear();
+
+    while(DRV8305_Read(DRV8305_WNWR)->WNWR.bit.FAULT == true);
+
+    Motor_DutyCycleSetter(30u);
+
+    DRV8305_Enable();
+    Motor_Start();
 
     while(1)
     {
-        GPIO->PORT0.bit.PIN0 = MOTVEZ->CCONR1.bit.MOT_EN;
         if(DRV8305_Read(DRV8305_WNWR)->WNWR.bit.PVDD_UVFL == true)
         {
-            GPIO->PORT0.bit.PIN18 = false;
-            MOTVEZ->CCONR1.bit.MOT_EN = 0u;
+            DRV8305_Disable();
+            Motor_Stop();
         }
         else
         {
-            GPIO->PORT0.bit.PIN18 = true;
-            MOTVEZ->CCONR1.bit.MOT_EN = ~MOTVEZ->CCONR1.bit.MOT_EN;
-            
+            DRV8305_Enable();
+            if(Motor_Running()) Motor_Stop();
+            else Motor_Start();
         }
         for (uint8_t i = 0; i < 2; i++)
         {

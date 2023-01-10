@@ -79,8 +79,8 @@ typedef struct
 		struct
 		{
 			__IOM uint16_t BREAK_LENGTH		: 5;
-            __IOM uint16_t DEMAG_PERIOD     : 3;
             __IOM uint16_t COMM_TIM_PSC    	: 8;
+            __IOM uint16_t DEMAG_PERIOD     : 3;
 		} bit;
 	} CCONR2;
 

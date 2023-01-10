@@ -48,13 +48,15 @@ INCS += 								\
 	-I ./Device							\
 	-I ./Code/SPI						\
 	-I ./Code/DRV8305					\
-	-I ./Code/ADC120IPT
+	-I ./Code/ADC120IPT					\
+	-I ./Code/Motor
 
 SRCS +=									\
 	main.c								\
 	SPI/SPI.c							\
 	DRV8305/DRV8305.c					\
-	ADC120IPT/ADC120IPT.c
+	ADC120IPT/ADC120IPT.c				\
+	Motor/Motor.c
 
 OUTPUT = LovagSoC_program
 
