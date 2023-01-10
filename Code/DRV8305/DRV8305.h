@@ -47,7 +47,7 @@ void DRV8305_Disable(void);
 bool DRV8305_Enabled(void);
 void DRV8305_ErrorClear(void);
 
-uint16_t DRV8305_Read(DRV8305_Address_t Address);
+DRV8305_Typedef* DRV8305_Read(DRV8305_Address_t Address);
 uint16_t DRV8305_Write(DRV8305_Address_t Address, uint16_t Data);
 
 void DRV8305_SetCSAGain(DRV8305_CSA_t CSA, DRV8305_CSA_Gain_t Gain);

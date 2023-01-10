@@ -79,7 +79,7 @@ void DRV8305_ErrorClear(void)
  * @param Address 
  * @return uint16_t 
  */
-uint16_t DRV8305_Read(DRV8305_Address_t Address)
+DRV8305_Typedef* DRV8305_Read(DRV8305_Address_t Address)
 {
     uint16_t RetVal = 0;
     uint16_t TxData = 0;
@@ -90,13 +90,11 @@ uint16_t DRV8305_Read(DRV8305_Address_t Address)
 
     SPI_ChipSelect(SPI_CS1);
 
-    RetVal = SPI_Tx_16bit(TxData);
+    *(&(DRV8305->WNWR.reg) + Address - 1) = SPI_Tx_16bit(TxData);
 
     SPI_ChipDeselect(SPI_CS1);
 
-    *(&(DRV8305->WNWR.reg) + Address - 1) = RetVal;
-
-    return RetVal;
+    return DRV8305;
 }
 
 /**
@@ -132,7 +130,7 @@ uint16_t DRV8305_Write(DRV8305_Address_t Address, uint16_t Data)
  */
 void DRV8305_SetCSAGain(DRV8305_CSA_t CSA, DRV8305_CSA_Gain_t Gain)
 {
-    uint16_t RegData = DRV8305_Read(DRV8305_SACR);
+    uint16_t RegData = DRV8305_Read(DRV8305_SACR)->SACR.reg;
 
     RegData &= ~(3 << (SACR_GAIN_CS1_Pos + CSA * 2));
     RegData |= Gain << (SACR_GAIN_CS1_Pos + CSA * 2);
