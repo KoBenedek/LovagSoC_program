@@ -50,7 +50,7 @@ try:
         item = item.replace("\n", "")
         item = "0x" + item
         ser.write(((str(int(item, 16))) + "\n").encode())
-        print("Progress: " + str(index * int(100 / len(source_contents))) + "%", end='\r')
+        print("Progress: " + str(int(index * 100 / len(source_contents))) + "%", end='\r')
         if int(item, 16) != int(ser.readline().decode("utf-8").replace("\n", "")): 
             print("Upload failed!")
             exit()

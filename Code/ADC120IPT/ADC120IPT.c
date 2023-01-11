@@ -13,7 +13,7 @@
 #include "ADC120IPT.h"
 
 /**
- * @brief 
+ * @brief Executes the initialisation of the ADC120 chip.
  * 
  */
 void ADC120_Init(void)

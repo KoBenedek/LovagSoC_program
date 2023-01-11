@@ -18,7 +18,6 @@
 #include "DRV8305Registers.h"
 #include "SPI.h"
 
-
 #define DRV8305_RW_BIT_Pos      15
 #define DRV8305_ADDRESS_Pos     11
 
@@ -45,6 +44,7 @@ void DRV8305_Init(void);
 void DRV8305_Enable(void);
 void DRV8305_Disable(void);
 bool DRV8305_Enabled(void);
+bool DRV8305_IsError(void);
 void DRV8305_ErrorClear(void);
 
 DRV8305_Typedef* DRV8305_Read(DRV8305_Address_t Address);

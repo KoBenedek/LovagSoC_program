@@ -11,11 +11,15 @@
  *  Description:    Source file containing the motor related functions.
  */
 
+/*
+ *    PIN20   -   n FPGA Pmod inverter enable pin
+ */
+
 #include "Motor.h"
 #include "LovagSoC.h"
 
 /**
- * @brief 
+ * @brief Initialises the motor module and MotVez peripheral with set parameters.
  * 
  */
 void Motor_Init(void)
@@ -49,19 +53,19 @@ void Motor_Init(void)
 }
 
 /**
- * @brief 
+ * @brief Prompts the MotVez peripheral to execute motor startup.
  * 
  */
 void Motor_Start(void) { MOTVEZ->CCONR1.bit.MOT_EN = 1u; }
 
 /**
- * @brief 
+ * @brief Prompts the MotVez peripheral to stop the motor.
  * 
  */
 void Motor_Stop(void) { MOTVEZ->CCONR1.bit.MOT_EN = 0u;}
 
 /**
- * @brief 
+ * @brief Checks whether or not the motor is running.
  * 
  * @return true 
  * @return false 
@@ -69,7 +73,7 @@ void Motor_Stop(void) { MOTVEZ->CCONR1.bit.MOT_EN = 0u;}
 bool Motor_Running(void) { return MOTVEZ->CCONR1.bit.MOT_EN; } //Not sufficient if motor stalls!
 
 /**
- * @brief 
+ * @brief Sets the duty cycle of the inverter power stage.
  * 
  * @param duty_cycle 
  */
@@ -80,7 +84,7 @@ void Motor_DutyCycleSetter(uint16_t duty_cycle)
 }
 
 /**
- * @brief 
+ * @brief Reads the commutational sector time of the motor.
  * 
  * @return uint16_t 
  */

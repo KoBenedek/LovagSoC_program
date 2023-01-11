@@ -18,10 +18,15 @@
 
 void ElsoFuggveny(void);
 
+/**
+ * @brief The main function.
+ * 
+ * @return int 
+ */
 int main(void)
 {
     GPIO->DIR.reg16 = 0xFFFFu;
-    
+
     Motor_Init();
     SPI_Init();
     DRV8305_Init();

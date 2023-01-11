@@ -15,7 +15,7 @@
 #include "LovagSoC.h"
 
 /**
- * @brief 
+ * @brief Initialises SPI peripheral parameters and IO.
  * 
  */
 void SPI_Init(void)
@@ -32,7 +32,7 @@ void SPI_Init(void)
 }
 
 /**
- * @brief 
+ * @brief Sets the selected SPI configuration.
  * 
  * @param NewConfig 
  */
@@ -58,7 +58,7 @@ void SPI_SetConfig(SPIConfig_t NewConfig)
 }
 
 /**
- * @brief 
+ * @brief Transmits a data packet of 8 bits.
  * 
  * @param TxData 
  * @return uint8_t 
@@ -71,7 +71,7 @@ uint8_t SPI_Tx_8bit(uint8_t TxData)
 }
 
 /**
- * @brief 
+ * @brief Transmits a data packet of 16 bits.
  * 
  * @param TxData 
  * @return uint16_t 
@@ -84,7 +84,7 @@ uint16_t SPI_Tx_16bit(uint16_t TxData)
 }
 
 /**
- * @brief 
+ * @brief Transmits a data packet of 32 bits.
  * 
  * @param TxData 
  * @return uint32_t 
@@ -97,7 +97,7 @@ uint32_t SPI_Tx_32bit(uint32_t TxData)
 }
 
 /**
- * @brief 
+ * @brief Activates the selected chip-select IO.
  * 
  * @param CSLine 
  */
@@ -119,7 +119,7 @@ void SPI_ChipSelect(SPIChipSel_t CSLine)
 }
 
 /**
- * @brief 
+ * @brief Deactivates the selected chip-select IO.
  * 
  * @param CSLine 
  */
