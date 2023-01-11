@@ -20,12 +20,15 @@
 DRV8305_Typedef DRV8305_Device;
 
 /**
- * @brief Currently reads all the registers and assigns an initial value to the DRV8305 struct.
+ * @brief 
  * 
  */
 void DRV8305_Init(void)
 {
+    GPIO->DIR.bit.PIN18 = 1u;
+
     DRV8305_Disable();
+    
     DRV8305_Read(DRV8305_WNWR);
     DRV8305_Read(DRV8305_VDSF);
     DRV8305_Read(DRV8305_ICFR);
@@ -43,13 +46,13 @@ void DRV8305_Init(void)
  * @brief 
  * 
  */
-void DRV8305_Enable(void) { GPIO->PORT0.bit.PIN18 = 1u; }
+void DRV8305_Enable(void) { GPIO->STATE.bit.PIN18 = 1u; }
 
 /**
  * @brief 
  * 
  */
-void DRV8305_Disable(void) { GPIO->PORT0.bit.PIN18 = 0u; }
+void DRV8305_Disable(void) { GPIO->STATE.bit.PIN18 = 0u; }
 
 /**
  * @brief 
@@ -57,7 +60,7 @@ void DRV8305_Disable(void) { GPIO->PORT0.bit.PIN18 = 0u; }
  * @return true 
  * @return false 
  */
-bool DRV8305_Enabled(void) { return GPIO->PORT0.bit.PIN18; }
+bool DRV8305_Enabled(void) { return GPIO->STATE.bit.PIN18; }
 
 /**
  * @brief 

@@ -20,6 +20,9 @@
  */
 void SPI_Init(void)
 {
+	GPIO->DIR.bit.PIN16 = 1u;
+	GPIO->DIR.bit.PIN17 = 1u;
+
     SPI_ChipDeselect(SPI_CS1);
     SPI_ChipDeselect(SPI_CS2);
 
@@ -103,11 +106,11 @@ void SPI_ChipSelect(SPIChipSel_t CSLine)
 	switch (CSLine)
 	{
 	case SPI_CS1:
-		GPIO->PORT0.bit.PIN16 = 0u;
+		GPIO->STATE.bit.PIN16 = 0u;
 	break;
 
 	case SPI_CS2:
-		GPIO->PORT0.bit.PIN17 = 0u;
+		GPIO->STATE.bit.PIN17 = 0u;
 	break;
 	
 	default:
@@ -126,11 +129,11 @@ void SPI_ChipDeselect(SPIChipSel_t CSLine)
 	{
 
 	case SPI_CS1:
-		GPIO->PORT0.bit.PIN16 = 1u;
+		GPIO->STATE.bit.PIN16 = 1u;
 	break;
 
 	case SPI_CS2:
-		GPIO->PORT0.bit.PIN17 = 1u;
+		GPIO->STATE.bit.PIN17 = 1u;
 	break;
 	
 	default:

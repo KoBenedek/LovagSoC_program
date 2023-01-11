@@ -20,6 +20,8 @@ void ElsoFuggveny(void);
 
 int main(void)
 {
+    GPIO->DIR.reg16 = 0xFFFFu;
+    
     Motor_Init();
     SPI_Init();
     DRV8305_Init();
@@ -65,6 +67,6 @@ void ElsoFuggveny(void)
             delay_cnt++;
         }
         
-        GPIO->PORT0.reg16 = 1 << i;
+        GPIO->STATE.reg16 = 1 << i;
     }
 }
