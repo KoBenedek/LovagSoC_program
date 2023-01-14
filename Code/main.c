@@ -12,6 +12,7 @@
 
 #include "LovagSoC.h"
 #include "SPI.h"
+#include "UART.h"
 #include "Motor.h"
 #include "DRV8305.h"
 #include "ADC120IPT.h"
@@ -33,7 +34,7 @@ int main(void)
 
     DRV8305_ErrorClear();
 
-    while(DRV8305_Read(DRV8305_WNWR)->WNWR.bit.FAULT == true);
+    while(DRV8305_Read(DRV8305_WNWR) != 0);
 
     Motor_DutyCycleSetter(30u);
 
@@ -42,16 +43,25 @@ int main(void)
 
     while(1)
     {
-        if(DRV8305_Read(DRV8305_WNWR)->WNWR.bit.PVDD_UVFL == true)
+        if(DRV8305_Read(DRV8305_WNWR) != 0)
         {
+            UART_SendString("Error!\n\r");
             DRV8305_Disable();
             Motor_Stop();
         }
         else
         {
             DRV8305_Enable();
-            if(Motor_Running()) Motor_Stop();
-            else Motor_Start();
+            if(Motor_Running())
+            {
+                Motor_Stop();
+                UART_SendString("Stopped.\n\r");
+            }
+            else 
+            {
+                Motor_Start();
+                UART_SendString("Started.\n\r");
+            }
         }
         for (uint8_t i = 0; i < 2; i++)
         {

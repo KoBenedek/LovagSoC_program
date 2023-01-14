@@ -63,7 +63,7 @@ void SPI_SetConfig(SPIConfig_t NewConfig)
  * @param TxData 
  * @return uint8_t 
  */
-uint8_t SPI_Tx_8bit(uint8_t TxData)
+uint8_t SPI_tx_8bit(uint8_t TxData)
 {
 	SPI->DAT.reg8 = TxData;
 	while(SPI->CTRL.bit.BUSY);
@@ -76,7 +76,7 @@ uint8_t SPI_Tx_8bit(uint8_t TxData)
  * @param TxData 
  * @return uint16_t 
  */
-uint16_t SPI_Tx_16bit(uint16_t TxData)
+uint16_t SPI_tx_16bit(uint16_t TxData)
 {
 	SPI->DAT.reg16 = TxData;
 	while(SPI->CTRL.bit.BUSY);
@@ -89,7 +89,7 @@ uint16_t SPI_Tx_16bit(uint16_t TxData)
  * @param TxData 
  * @return uint32_t 
  */
-uint32_t SPI_Tx_32bit(uint32_t TxData)
+uint32_t SPI_tx_32bit(uint32_t TxData)
 {
 	SPI->DAT.reg32 = TxData;
 	while(SPI->CTRL.bit.BUSY);

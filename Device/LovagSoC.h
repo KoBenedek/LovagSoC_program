@@ -252,12 +252,52 @@ typedef struct
     } DAT;
 } SPI_Typedef;
 
+typedef struct
+{
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+                  uint16_t              : 8;
+            __IOM uint16_t STOPB        : 1;
+            __IOM uint16_t PAR          : 2;
+            __IOM uint16_t DAT_BITS     : 3;
+            __IM  uint16_t BUSY         : 1;
+            __IM  uint16_t DAT_RDY      : 1;
+        } bit;
+    } CTRL;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t CLK_PSC      : 16;
+        } bit;
+    } PSCR;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t DAT          : 16;
+        } bit;
+    } DAT;
+} UART_Typedef;
+
 #define MOTVEZ_BASE 0x1002U
 #define GPIO_BASE   0x1080U
 #define SPI_BASE    0x1088U
+#define UART_BASE   0x1090U
 
 #define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
 #define SPI         ((SPI_Typedef*)SPI_BASE)
+#define UART        ((UART_Typedef*)UART_BASE)
 
 #endif /* LovagSoC_H_ */

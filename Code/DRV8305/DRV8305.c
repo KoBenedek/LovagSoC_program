@@ -18,8 +18,6 @@
 #include "DRV8305.h"
 #include "LovagSoC.h"
 
-DRV8305_Typedef DRV8305_Device;
-
 /**
  * @brief Initialises the DRV8305 internal device image and the necessary IO.
  * 
@@ -90,7 +88,7 @@ void DRV8305_ErrorClear(void)
  * @param Address 
  * @return DRV8305_Typedef* 
  */
-DRV8305_Typedef* DRV8305_Read(DRV8305_Address_t Address)
+uint16_t DRV8305_Read(DRV8305_Address_t Address)
 {
     uint16_t RetVal = 0;
     uint16_t TxData = 0;
@@ -101,11 +99,12 @@ DRV8305_Typedef* DRV8305_Read(DRV8305_Address_t Address)
 
     SPI_ChipSelect(SPI_CS1);
 
-    *(&(DRV8305->WNWR.reg) + Address - 1) = SPI_Tx_16bit(TxData);
+    RetVal = SPI_tx_16bit(TxData);
+    *(&(DRV8305->WNWR.reg) + Address - 1) = RetVal;
 
     SPI_ChipDeselect(SPI_CS1);
 
-    return DRV8305;
+    return RetVal;
 }
 
 /**
@@ -126,7 +125,7 @@ uint16_t DRV8305_Write(DRV8305_Address_t Address, uint16_t Data)
 
     SPI_ChipSelect(SPI_CS1);
 
-    RetVal = SPI_Tx_16bit(TxData);
+    RetVal = SPI_tx_16bit(TxData);
 
     SPI_ChipDeselect(SPI_CS1);
 
@@ -141,7 +140,7 @@ uint16_t DRV8305_Write(DRV8305_Address_t Address, uint16_t Data)
  */
 void DRV8305_SetCSAGain(DRV8305_CSA_t CSA, DRV8305_CSA_Gain_t Gain)
 {
-    uint16_t RegData = DRV8305_Read(DRV8305_SACR)->SACR.reg;
+    uint16_t RegData = DRV8305_Read(DRV8305_SACR);
 
     RegData &= ~(3 << (SACR_GAIN_CS1_Pos + CSA * 2));
     RegData |= Gain << (SACR_GAIN_CS1_Pos + CSA * 2);

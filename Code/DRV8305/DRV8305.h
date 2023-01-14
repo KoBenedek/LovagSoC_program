@@ -38,7 +38,7 @@ typedef enum
     Gain_80VV = 3
 } DRV8305_CSA_Gain_t;
 
-extern DRV8305_Typedef DRV8305_Device;
+static volatile DRV8305_Typedef DRV8305_Device;
 
 void DRV8305_Init(void);
 void DRV8305_Enable(void);
@@ -47,7 +47,7 @@ bool DRV8305_Enabled(void);
 bool DRV8305_IsError(void);
 void DRV8305_ErrorClear(void);
 
-DRV8305_Typedef* DRV8305_Read(DRV8305_Address_t Address);
+uint16_t DRV8305_Read(DRV8305_Address_t Address);
 uint16_t DRV8305_Write(DRV8305_Address_t Address, uint16_t Data);
 
 void DRV8305_SetCSAGain(DRV8305_CSA_t CSA, DRV8305_CSA_Gain_t Gain);
