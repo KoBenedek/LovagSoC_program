@@ -17,7 +17,7 @@
 #include "DRV8305.h"
 #include "ADC120IPT.h"
 
-void ElsoFuggveny(void);
+void ElsoFuggveny(uint16_t count);
 
 /**
  * @brief The main function.
@@ -65,23 +65,22 @@ int main(void)
         }
         for (uint8_t i = 0; i < 2; i++)
         {
-            ElsoFuggveny();
+            ElsoFuggveny(65535);
         }
+        GPIO->STATE.reg16 = ADC120_Read(ADC120_Channel3);
     }
 
     return 0;
 }
 
-void ElsoFuggveny(void)
+void ElsoFuggveny(uint16_t count)
 {
     for (volatile uint32_t i = 0; i < 16; i++)
     {
         volatile uint16_t delay_cnt = 0;
-        for (volatile uint16_t j = 0; j < 65535; j++)
+        for (volatile uint16_t j = 0; j < count; j++)
         {
             delay_cnt++;
         }
-        
-        GPIO->STATE.reg16 = 1 << i;
     }
 }
