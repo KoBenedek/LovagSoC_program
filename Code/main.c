@@ -12,60 +12,75 @@
 
 #include "LovagSoC.h"
 #include "SPI.h"
+#include "UART.h"
+#include "Motor.h"
 #include "DRV8305.h"
 #include "ADC120IPT.h"
 
-void ElsoFuggveny(void);
+void ElsoFuggveny(uint16_t count);
 
+/**
+ * @brief The main function.
+ * 
+ * @return int 
+ */
 int main(void)
 {
-    MOTVEZ->CCONR1.bit.MOT_EN = 0u;
-    GPIO->PORT0.bit.PIN20 = false;
-    GPIO->PORT0.bit.PIN18 = false;
-    GPIO->PORT0.bit.PIN18 = true;
-    GPIO->PORT0.bit.PIN18 = false;
+    GPIO->DIR.reg16 = 0xFFFFu;
+
+    Motor_Init();
     SPI_Init();
     DRV8305_Init();
-    while(DRV8305->WNWR.bit.FAULT == true)
-    {
-        DRV8305_Read(DRV8305_WNWR);
-    }
-    GPIO->PORT0.bit.PIN18 = true;
-    MOTVEZ->CCONR1.bit.MOT_EN = 1u;
+
+    DRV8305_ErrorClear();
+
+    while(DRV8305_Read(DRV8305_WNWR) != 0);
+
+    Motor_DutyCycleSetter(30u);
+
+    DRV8305_Enable();
+    Motor_Start();
 
     while(1)
     {
-        GPIO->PORT0.bit.PIN0 = MOTVEZ->CCONR1.bit.MOT_EN;
-        if(DRV8305_Read(DRV8305_WNWR)->WNWR.bit.PVDD_UVFL == true)
+        if(DRV8305_Read(DRV8305_WNWR) != 0)
         {
-            GPIO->PORT0.bit.PIN18 = false;
-            MOTVEZ->CCONR1.bit.MOT_EN = 0u;
+            UART_SendString("Error!\n\r");
+            DRV8305_Disable();
+            Motor_Stop();
         }
         else
         {
-            GPIO->PORT0.bit.PIN18 = true;
-            MOTVEZ->CCONR1.bit.MOT_EN = ~MOTVEZ->CCONR1.bit.MOT_EN;
-            
+            DRV8305_Enable();
+            if(Motor_Running())
+            {
+                Motor_Stop();
+                UART_SendString("Stopped.\n\r");
+            }
+            else 
+            {
+                Motor_Start();
+                UART_SendString("Started.\n\r");
+            }
         }
         for (uint8_t i = 0; i < 2; i++)
         {
-            ElsoFuggveny();
+            ElsoFuggveny(65535);
         }
+        GPIO->STATE.reg16 = ADC120_Read(ADC120_Channel3);
     }
 
     return 0;
 }
 
-void ElsoFuggveny(void)
+void ElsoFuggveny(uint16_t count)
 {
     for (volatile uint32_t i = 0; i < 16; i++)
     {
         volatile uint16_t delay_cnt = 0;
-        for (volatile uint16_t j = 0; j < 65535; j++)
+        for (volatile uint16_t j = 0; j < count; j++)
         {
             delay_cnt++;
         }
-        
-        GPIO->PORT0.reg16 = 1 << i;
     }
 }

@@ -13,7 +13,7 @@
 #include "ADC120IPT.h"
 
 /**
- * @brief 
+ * @brief Executes the initialisation of the ADC120 chip.
  * 
  */
 void ADC120_Init(void)
@@ -38,8 +38,8 @@ uint16_t ADC120_Read(ADC120_Address_t Address)
 
     SPI_ChipSelect(SPI_CS2);
 
-    SPI_Tx_16bit(TxData);
-    RetVal = SPI_Tx_16bit(0);
+    SPI_tx_16bit(TxData);
+    RetVal = SPI_tx_16bit(0);
 
     SPI_ChipDeselect(SPI_CS2);
 
@@ -62,7 +62,7 @@ void ADC120_ReadAll(uint16_t *DataArray)
     for (ADC120_Address_t Address = ADC120_Channel2; Address < (ADC120_Channel8 + 2); Address++)
     {
         TxData = ((uint16_t)Address) << ADC120_ADDRESS_Pos;
-        *DataArray++ = SPI_Tx_16bit(TxData);
+        *DataArray++ = SPI_tx_16bit(TxData);
     }
 
     SPI_ChipDeselect(SPI_CS2);
@@ -88,18 +88,18 @@ void ADC120_ReadSequence(uint16_t *DataArray, ADC120_Address_t *SequenceArray, u
 
     if(ADC120_Channel1 == *SequenceArray--)
     {
-        *DataArray++ = SPI_Tx_16bit(TxData);
+        *DataArray++ = SPI_tx_16bit(TxData);
         Index++;
     }
     else
     {
-        SPI_Tx_16bit(TxData);
+        SPI_tx_16bit(TxData);
     }
 
     while (Index < SequenceLength)
     {
         TxData = ((uint16_t)(*SequenceArray++)) << ADC120_ADDRESS_Pos;
-        *DataArray++ = SPI_Tx_16bit(TxData);;
+        *DataArray++ = SPI_tx_16bit(TxData);;
         Index++;
     }
 

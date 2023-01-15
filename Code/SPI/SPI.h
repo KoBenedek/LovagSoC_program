@@ -32,9 +32,9 @@ typedef enum
 void        SPI_Init(void);
 void        SPI_SetConfig(SPIConfig_t NewConfig);
 
-uint8_t     SPI_Tx_8bit(uint8_t TxData);
-uint16_t    SPI_Tx_16bit(uint16_t TxData);
-uint32_t    SPI_Tx_32bit(uint32_t TxData);
+uint8_t     SPI_tx_8bit(uint8_t TxData);
+uint16_t    SPI_tx_16bit(uint16_t TxData);
+uint32_t    SPI_tx_32bit(uint32_t TxData);
 
 void        SPI_ChipSelect(SPIChipSel_t CSLine);
 void        SPI_ChipDeselect(SPIChipSel_t CSLine);

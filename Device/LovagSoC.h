@@ -79,8 +79,8 @@ typedef struct
 		struct
 		{
 			__IOM uint16_t BREAK_LENGTH		: 5;
-            __IOM uint16_t DEMAG_PERIOD     : 3;
             __IOM uint16_t COMM_TIM_PSC    	: 8;
+            __IOM uint16_t DEMAG_PERIOD     : 3;
 		} bit;
 	} CCONR2;
 
@@ -183,7 +183,49 @@ typedef struct
             __IOM uint32_t PIN30		: 1;
             __IOM uint32_t PIN31		: 1;
         } bit;
-    } PORT0;
+    } STATE;
+
+    union
+    {
+		__IOM uint32_t reg32;
+        __IOM uint16_t reg16;
+
+        struct
+        {
+            __IOM uint32_t PIN0			: 1;
+            __IOM uint32_t PIN1			: 1;
+            __IOM uint32_t PIN2			: 1;
+            __IOM uint32_t PIN3			: 1;
+            __IOM uint32_t PIN4			: 1;
+            __IOM uint32_t PIN5			: 1;
+            __IOM uint32_t PIN6			: 1;
+            __IOM uint32_t PIN7			: 1;
+            __IOM uint32_t PIN8			: 1;
+            __IOM uint32_t PIN9			: 1;
+            __IOM uint32_t PIN10		: 1;
+            __IOM uint32_t PIN11		: 1;
+            __IOM uint32_t PIN12		: 1;
+            __IOM uint32_t PIN13		: 1;
+            __IOM uint32_t PIN14		: 1;
+            __IOM uint32_t PIN15		: 1;
+            __IOM uint32_t PIN16		: 1;
+            __IOM uint32_t PIN17		: 1;
+            __IOM uint32_t PIN18		: 1;
+            __IOM uint32_t PIN19		: 1;
+            __IOM uint32_t PIN20		: 1;
+            __IOM uint32_t PIN21		: 1;
+            __IOM uint32_t PIN22		: 1;
+            __IOM uint32_t PIN23		: 1;
+            __IOM uint32_t PIN24		: 1;
+            __IOM uint32_t PIN25		: 1;
+            __IOM uint32_t PIN26		: 1;
+            __IOM uint32_t PIN27		: 1;
+            __IOM uint32_t PIN28		: 1;
+            __IOM uint32_t PIN29		: 1;
+            __IOM uint32_t PIN30		: 1;
+            __IOM uint32_t PIN31		: 1;
+        } bit;
+    } DIR;
 } GPIO_Typedef;
 
 typedef struct
@@ -210,12 +252,52 @@ typedef struct
     } DAT;
 } SPI_Typedef;
 
+typedef struct
+{
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+                  uint16_t              : 8;
+            __IOM uint16_t STOPB        : 1;
+            __IOM uint16_t PAR          : 2;
+            __IOM uint16_t DAT_BITS     : 3;
+            __IM  uint16_t BUSY         : 1;
+            __IM  uint16_t DAT_RDY      : 1;
+        } bit;
+    } CTRL;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t CLK_PSC      : 16;
+        } bit;
+    } PSCR;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t DAT          : 16;
+        } bit;
+    } DAT;
+} UART_Typedef;
+
 #define MOTVEZ_BASE 0x1002U
 #define GPIO_BASE   0x1080U
-#define SPI_BASE    0x1084U
+#define SPI_BASE    0x1088U
+#define UART_BASE   0x1090U
 
 #define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
 #define SPI         ((SPI_Typedef*)SPI_BASE)
+#define UART        ((UART_Typedef*)UART_BASE)
 
 #endif /* LovagSoC_H_ */

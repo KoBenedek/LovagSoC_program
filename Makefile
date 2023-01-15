@@ -10,15 +10,15 @@
 
 .PHONY: build directory remove-temp
 #Assembly compiler command
-ASMC = riscv32-unknown-elf-as
+ASMC = riscv64-unknown-elf-as
 #C compiler command
-CC = riscv32-unknown-elf-gcc
+CC = riscv64-unknown-elf-gcc
 #Linker command
-LD = riscv32-unknown-elf-ld
+LD = riscv64-unknown-elf-ld
 #Generate outputs command
-OBJCOPY = riscv32-unknown-elf-objcopy
+OBJCOPY = riscv64-unknown-elf-objcopy
 #Data dump command
-OBJDUMP = riscv32-unknown-elf-objdump
+OBJDUMP = riscv64-unknown-elf-objdump
 #Tool to convert .elf to .hex
 ELF2HEX = elf2hex
 #Name of the linker script
@@ -26,9 +26,9 @@ ASM_LINKER = linker
 #Memory map
 MAP = $(OUTPUT).map
 
-ASMCFLAGS = -march=rv32i -mabi=ilp32 -mno-relax
-CCFLAGS = -march=rv32i -mabi=ilp32 -mno-relax -g -Os $(INCS)
-LDFLAGS = -m elf32lriscv -no-relax -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
+ASMCFLAGS = -march=rv32i -mabi=ilp32 
+CCFLAGS = -march=rv32i -mabi=ilp32 $(INCS) -O3 -Wall -funsigned-char
+LDFLAGS = -m elf32lriscv -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
 E2HFLAGS= --bit-width 32
 # -mno-relax
 # -no-relax
@@ -47,14 +47,18 @@ STARTUP = LovagSoC_startup.S
 INCS += 								\
 	-I ./Device							\
 	-I ./Code/SPI						\
+	-I ./Code/UART						\
 	-I ./Code/DRV8305					\
-	-I ./Code/ADC120IPT
+	-I ./Code/ADC120IPT					\
+	-I ./Code/Motor
 
 SRCS +=									\
 	main.c								\
 	SPI/SPI.c							\
+	UART/UART.c							\
 	DRV8305/DRV8305.c					\
-	ADC120IPT/ADC120IPT.c
+	ADC120IPT/ADC120IPT.c				\
+	Motor/Motor.c
 
 OUTPUT = LovagSoC_program
 
