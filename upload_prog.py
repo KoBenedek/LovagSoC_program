@@ -14,6 +14,7 @@
 
 import serial
 import os
+import sys
 
 ser = serial.Serial()
 ser.port = "/dev/ttyACM0"
@@ -30,7 +31,6 @@ source_name = "LovagSoC_program.hex"
 os.chdir("./build/")
 if os.path.isfile(source_name):
     source = open(source_name, "r")
-    print("Uploading " + source_name + " to LovagSoC.")
 else:
     print("File of name: " + source_name + " not found!")
     exit()
@@ -42,21 +42,62 @@ for line in source:
 
 try: 
     ser.open()
-    ser.write(("prog\n").encode())
-    ser.readline()
-    ser.write((str(len(source_contents)) + "\n").encode())
-    ser.readline()
-    for index, item in enumerate(source_contents):
-        item = item.replace("\n", "")
-        item = "0x" + item
-        ser.write(((str(int(item, 16))) + "\n").encode())
-        print("Progress: " + str(int(index * 100 / len(source_contents))) + "%", end='\r')
-        if int(item, 16) != int(ser.readline().decode("utf-8").replace("\n", "")): 
-            print("Upload failed!")
+    if sys.argv[1] == "program":
+        print("Uploading " + source_name + " to LovagSoC.")
+        ser.write(("prog\n").encode())
+        ser.readline()
+        ser.write((str(len(source_contents)) + "\n").encode())
+        ser.readline()
+        for index, item in enumerate(source_contents):
+            item = item.replace("\n", "")
+            item = "0x" + item
+            ser.write(((str(int(item, 16))) + "\n").encode())
+            #print(str(index+1) + "\t" + str(int(item, 16)))
+            read_data = ser.readline().decode("utf-8").replace("\n", "")
+            #print("Rec:\t" + read_data)
+            print("Progress: " + str(int(index * 100 / len(source_contents))) + "%", end='\r')
+            if int(item, 16) != int(read_data): 
+                print("Upload failed!")
+                exit()
+        ser.write(("done\n").encode())
+        ser.readline()
+        print("Upload finished.")
+    elif sys.argv[1] == "erase":
+        print("Erasing memory.")
+        ser.write(("erase\n").encode())
+        ser.readline()
+        ser.write((sys.argv[2] + "\n").encode())
+        ser.readline()
+        read_data = ser.readline().decode("utf-8").replace("\n", "")
+        if read_data.strip() == "done":
+            print("Memory erased.")
             exit()
-    ser.write(("done\n").encode())
-    ser.readline()
-    print("Upload finished.")
+        elif read_data.strip() == "error":
+            print("Erase failed!")
+            exit()
+    elif sys.argv[1] == "read":
+        print("Reading memory contents into file.")
+        read_file = open(sys.argv[3], "w")
+        ser.write(("read\n").encode())
+        ser.readline()
+        ser.write((sys.argv[2] + "\n").encode())
+        ser.readline()
+        for index in range(int(sys.argv[2])):
+            read_data = ser.readline().decode("utf-8").replace("\n", "")
+            #print("Read:" + str("{:08x}".format(int(read_data))))
+            if read_data.strip() == "error":
+                print("Read failed!")
+                exit()
+            read_file.write(str("{:08x}".format(int(read_data))) + "\n")
+            print("Progress: " + str(int(index * 100 / int(sys.argv[2]))) + "%", end='\r')
+        read_data = ser.readline().decode("utf-8").replace("\n", "")
+        if read_data.strip() == "done":
+            print("Read complete.")
+            exit()
+        elif read_data.strip() == "error":
+            print("Read failed!")
+            exit()
+        ser.readline()
     ser.close()
     exit()
 except Exception as e:

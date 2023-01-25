@@ -290,10 +290,10 @@ typedef struct
     } DAT;
 } UART_Typedef;
 
-#define MOTVEZ_BASE 0x1002U
-#define GPIO_BASE   0x1080U
-#define SPI_BASE    0x1088U
-#define UART_BASE   0x1090U
+#define MOTVEZ_BASE 0x2002U
+#define GPIO_BASE   0x2080U
+#define SPI_BASE    0x2088U
+#define UART_BASE   0x2090U
 
 #define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
