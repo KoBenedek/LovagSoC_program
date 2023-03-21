@@ -7,11 +7,23 @@
 #
 #   Description:    LovagSoC startup file.
 
-.section .text
+.text
+.global _start
+.type _start, @function
 
-.globl LovagSoC_startup
+_start:
 
-startup:
-    li sp, 1024
-    call main
-    ebreak
+     li   sp,0x2000
+
+# zero-init bss section:
+     la a0, _sbss
+     la a1, _ebss
+     bge a0, a1, end_init_bss
+loop_init_bss:
+     sw zero, 0(a0)
+     addi a0, a0, 4
+     blt a0, a1, loop_init_bss
+end_init_bss:
+
+     call main
+     ebreak

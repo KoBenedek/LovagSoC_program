@@ -7,6 +7,8 @@
  *  Author:         Benedek Kocsis
  *
  *  Title:          Main
+ * 
+ *  Known issues (TODO):
  *  
  */
 

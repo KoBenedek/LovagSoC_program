@@ -14,12 +14,12 @@
 MEMORY
 {
    ROM(rx) : ORIGIN = 0x0000, LENGTH = 6144 /* 6kB ROM */
-   BRAM(rwx) : ORIGIN = 6144, LENGTH = 1024 /* 1kB RAM */
+   BRAM(rwx) : ORIGIN = 6144, LENGTH = 2048 /* 2kB RAM */
 }
 SECTIONS
 {
     /* Text section contains the code and read-only data. */
-    .text : ALIGN(4)
+    .text :
     {
         . = ALIGN(4);
         ./Device/LovagSoC_startup.o (.text)
@@ -31,8 +31,9 @@ SECTIONS
     } >ROM
 
     /* Data section contains variables and runtime generated data. */
-    .data : ALIGN(4)
+    .data :
     {
+        . = ALIGN(4);
         _sdata = .;
         *(.data)
         *(.sdata)
@@ -40,8 +41,9 @@ SECTIONS
         _edata = .;
     } >BRAM
 
-    .bss : ALIGN(4)
+    .bss :
     {
+        . = ALIGN(4);
         _sbss = .;
         *(.bss)
         *(.sbss)

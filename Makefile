@@ -27,7 +27,7 @@ ASM_LINKER = linker
 MAP = $(OUTPUT).map
 
 ASMCFLAGS = -march=rv32i -mabi=ilp32 
-CCFLAGS = -march=rv32i -mabi=ilp32 $(INCS) -O3 -Wall -funsigned-char
+CCFLAGS = -march=rv32i -mabi=ilp32 $(INCS) -g -O0 -no-pie -Wall -funsigned-char
 LDFLAGS = -m elf32lriscv -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
 E2HFLAGS= --bit-width 32
 # -mno-relax
@@ -66,7 +66,7 @@ ASM_OBJ = $(addprefix $(PATH_TO_STARTUP)/, $(subst .S,.o, $(STARTUP)))
 
 OBJS = $(addprefix $(PATH_TO_SRCS)/, $(subst .c,.o, $(SRCS)))
 
-build: directory $(OUTPUT).elf remove-temp $(OUTPUT).bin $(OUTPUT)_ihex.hex $(OUTPUT).v $(OUTPUT).hex
+build: directory $(OUTPUT).elf $(OUTPUT)_objview.txt  remove-temp $(OUTPUT).bin $(OUTPUT)_ihex.hex $(OUTPUT).v $(OUTPUT).hex $(OUTPUT)_elfview.txt
 	@echo Build complete.
 
 directory:
@@ -96,18 +96,20 @@ $(OUTPUT).v: $(OUTPUT).elf
 $(OUTPUT).hex: $(OUTPUT).elf
 	@$(PATH_TO_E2H)/$(ELF2HEX) $(E2HFLAGS) --input $(PATH_TO_BUILD)/$(OUTPUT).elf --output $(PATH_TO_BUILD)/$@
 
-program:
-	@python3 upload_prog.py
+$(OUTPUT)_objview.txt: $(ASM_OBJ) $(OBJS)
+	@$(OBJDUMP) -S $(ASM_OBJ_PATH) $(OBJS_PATH) > $(PATH_TO_BUILD)/$@
 
-view-o: $(OUTPUT).elf
-	@$(OBJDUMP) -d $(ASM_OBJ_PATH) $(OBJS_PATH)
-	@-rm $(OBJS_PATH)
-	@-rm $(ASM_OBJ_PATH)
+$(OUTPUT)_elfview.txt: $(OUTPUT).elf
+	@$(OBJDUMP) -S $(PATH_TO_BUILD)/$(OUTPUT).elf > $(PATH_TO_BUILD)/$@
 
-view-elf: $(OUTPUT).elf
-	@$(OBJDUMP) -D $(PATH_TO_BUILD)/$(OUTPUT).elf
-	@-rm $(OBJS_PATH)
-	@-rm $(ASM_OBJ_PATH)
+program: erase
+	@python3 upload_prog.py program
+
+read:
+	@python3 upload_prog.py read 2048 read_code.txt
+
+erase:
+	@python3 upload_prog.py erase 2048
 
 remove-temp:
 	@-rm $(OBJS_PATH)
