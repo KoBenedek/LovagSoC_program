@@ -26,9 +26,19 @@ void SPI_Init(void)
     SPI_ChipDeselect(SPI_CS1);
     SPI_ChipDeselect(SPI_CS2);
 
+	//Set the config for ADC120.
+	SPI->CTRL.bit.ALT_CFG = 0u;
 	SPI->CTRL.bit.PHA = 0u;
 	SPI->CTRL.bit.POL = 0u;
-	SPI->CTRL.bit.CLK_PSC = 100u;
+	SPI->CTRL.bit.CLK_PSC = 4u;
+
+	//Set the config for DRV8305.
+	SPI->CTRL.bit.ALT_CFG = 1u;
+	SPI->CTRL.bit.PHA = 1u;
+	SPI->CTRL.bit.POL = 0u;
+	SPI->CTRL.bit.CLK_PSC = 50u;
+
+	SPI->CTRL.bit.ALT_CFG = 0u;
 }
 
 /**
@@ -38,23 +48,7 @@ void SPI_Init(void)
  */
 void SPI_SetConfig(SPIConfig_t NewConfig)
 {
-	switch (NewConfig)
-	{
-	case Config_ADC120:
-		SPI->CTRL.bit.PHA = 0u;
-		SPI->CTRL.bit.POL = 0u;
-		SPI->CTRL.bit.CLK_PSC = 4u;
-	break;
-	
-	case Config_DRV8305:
-		SPI->CTRL.bit.PHA = 1u;
-		SPI->CTRL.bit.POL = 0u;
-		SPI->CTRL.bit.CLK_PSC = 50u;
-	break;
-	
-	default:
-	break;
-	}
+	SPI->CTRL.bit.ALT_CFG = (uint8_t)NewConfig;
 }
 
 /**

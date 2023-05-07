@@ -236,7 +236,8 @@ typedef struct
 
         struct
         {
-                  uint16_t			    : 6;
+                  uint16_t			    : 5;
+            __IOM uint16_t ALT_CFG      : 1;
             __IM  uint16_t BUSY 		: 1;
             __IOM uint16_t CLK_PSC      : 7;
             __IOM uint16_t POL          : 1;
