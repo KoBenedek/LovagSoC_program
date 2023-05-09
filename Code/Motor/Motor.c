@@ -29,8 +29,6 @@ void Motor_Init(void)
     //Disable the inverter circuit.
     GPIO->STATE.bit.PIN20 = 1u;
 
-    //Needs to be set to 0 otherwise the motor spins immediately op power-up.
-    MOTVEZ->CCONR1.bit.EN_CTRL_MOT_EN = 0u; 
     MOTVEZ->CCONR1.bit.MOT_EN = 0u;
 
     MOTVEZ->CCONR1.bit.COAST_LOCK_CNT = 2u;

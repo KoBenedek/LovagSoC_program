@@ -40,7 +40,8 @@ typedef struct
 			__IOM uint16_t BEMF_FILT_CYCLES	: 7;
 			__IOM uint16_t BEMF_FILT_EN		: 1;
             __IOM uint16_t PWM_SYNC         : 2;
-            __IOM uint16_t DEMAG_EN         : 2;
+            __IOM uint16_t DEMAG_EN         : 1;
+            __IOM uint16_t MASK_EN          : 1;
             __IM  uint16_t POS_PTRN         : 3;
             __IOM uint16_t HALL_EN          : 1;
 		} bit;
@@ -64,7 +65,7 @@ typedef struct
 		{
 				  uint16_t					: 6;
 			__IOM uint16_t COAST_LOCK_CNT	: 5;
-            __IOM uint16_t EN_CTRL_MOT_EN   : 1;
+                  uint16_t                  : 1;
             __IOM uint16_t SYNC_MOT_MODE    : 1;
             __IOM uint16_t MOT_BREAK        : 1;
             __IOM uint16_t MOT_DIR          : 1;
