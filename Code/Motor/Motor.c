@@ -34,10 +34,10 @@ void Motor_Init(void)
     MOTVEZ->CCONR1.bit.COAST_LOCK_CNT = 2u;
     MOTVEZ->CCONR2.bit.COMM_TIM_PSC = 20u;
     MOTVEZ->CCONR2.bit.DEMAG_PERIOD = 4u;
-    MOTVEZ->OLRR1.bit.OL_RAMP_CONST = 4u;
+    MOTVEZ->OLRR1.bit.OL_RAMP_CONST = 5u;
     MOTVEZ->OLRR1.bit.OL_RAMP_FINAL = 6000u;
-    MOTVEZ->OLRR2.bit.OL_RAMP_START = 60000u;
-    MOTVEZ->OLRR3.bit.COAST_LOCK_PR = 30000u;
+    MOTVEZ->OLRR2.bit.OL_RAMP_START = 35000u;
+    MOTVEZ->OLRR3.bit.COAST_LOCK_PR = 25000u;
     MOTVEZ->PDR.bit.BEMF_FILT_CYCLES = 10u;
     MOTVEZ->PDR.bit.BEMF_FILT_EN = 1u;
     MOTVEZ->PDR.bit.DEMAG_EN = 1u;
@@ -45,6 +45,10 @@ void Motor_Init(void)
     MOTVEZ->PWMCR.bit.PWM_DC = 40u;
     MOTVEZ->PWMCR.bit.PWM_INT_GEN = 1u;
     MOTVEZ->PWMCR.bit.PWM_TIM_PSC = 5u;
+
+    MOTVEZ->SDR1.bit.STOP_ON_STALL = 0u;
+    MOTVEZ->SDR1.bit.STALL_DET_EN = 1u;
+    MOTVEZ->SDR2.bit.MAX_COMM_PR = 0xFFFEu;
 
     //Enable the inverter circuit.
     GPIO->STATE.bit.PIN20 = 0u;

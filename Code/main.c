@@ -38,7 +38,7 @@ int main(void)
 
     while(DRV8305_Read(DRV8305_WNWR) != 0);
 
-    Motor_DutyCycleSetter(30u);
+    Motor_DutyCycleSetter(50u);
 
     DRV8305_Enable();
     Motor_Start();

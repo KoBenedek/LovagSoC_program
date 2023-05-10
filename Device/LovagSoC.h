@@ -116,6 +116,30 @@ typedef struct
 		} bit;
 	} OLRR3;
 
+    union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			      uint16_t					: 1;
+			__IOM uint16_t MIN_COMM_PR		: 11;
+			__IOM uint16_t STALL_DET_EN		: 2;
+			__IM  uint16_t MOT_STALLED		: 1;
+			__IOM uint16_t STOP_ON_STALL	: 1;
+		} bit;
+	} SDR1;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			__IOM uint16_t MAX_COMM_PR		: 16;
+		} bit;
+	} SDR2;
+
 	union
 	{
 		__IOM uint16_t reg;
