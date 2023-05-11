@@ -38,7 +38,7 @@ int main(void)
 
     while(DRV8305_Read(DRV8305_WNWR) != 0);
 
-    Motor_DutyCycleSetter(30u);
+    Motor_DutyCycleSetter(50u);
 
     DRV8305_Enable();
     Motor_Start();
@@ -47,7 +47,7 @@ int main(void)
     {
         if(DRV8305_Read(DRV8305_WNWR) != 0)
         {
-            UART_SendString("Error!\n\r");
+            UART_SendString("Undervoltage!\n\r");
             DRV8305_Disable();
             Motor_Stop();
         }
@@ -58,6 +58,11 @@ int main(void)
             {
                 Motor_Stop();
                 UART_SendString("Stopped.\n\r");
+            }
+            else if(Motor_Stalled())
+            {
+                Motor_ClearError();
+                UART_SendString("Stalled. Restarting. \n\r");
             }
             else 
             {

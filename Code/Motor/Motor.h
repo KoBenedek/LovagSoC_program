@@ -21,6 +21,8 @@ void Motor_Init(void);
 void Motor_Start(void);
 void Motor_Stop(void);
 bool Motor_Running(void);
+bool Motor_Stalled(void);
+void Motor_ClearError(void);
 void Motor_DutyCycleSetter(uint16_t duty_cycle);
 uint16_t Motor_PeriodGetter(void);
 

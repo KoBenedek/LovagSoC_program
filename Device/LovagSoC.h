@@ -40,7 +40,8 @@ typedef struct
 			__IOM uint16_t BEMF_FILT_CYCLES	: 7;
 			__IOM uint16_t BEMF_FILT_EN		: 1;
             __IOM uint16_t PWM_SYNC         : 2;
-            __IOM uint16_t DEMAG_EN         : 2;
+            __IOM uint16_t DEMAG_EN         : 1;
+            __IOM uint16_t MASK_EN          : 1;
             __IM  uint16_t POS_PTRN         : 3;
             __IOM uint16_t HALL_EN          : 1;
 		} bit;
@@ -64,7 +65,7 @@ typedef struct
 		{
 				  uint16_t					: 6;
 			__IOM uint16_t COAST_LOCK_CNT	: 5;
-            __IOM uint16_t EN_CTRL_MOT_EN   : 1;
+                  uint16_t                  : 1;
             __IOM uint16_t SYNC_MOT_MODE    : 1;
             __IOM uint16_t MOT_BREAK        : 1;
             __IOM uint16_t MOT_DIR          : 1;
@@ -114,6 +115,30 @@ typedef struct
             __IOM uint16_t COAST_LOCK_PR    : 16;
 		} bit;
 	} OLRR3;
+
+    union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			      uint16_t					: 1;
+			__IOM uint16_t MIN_COMM_PR		: 11;
+			__IOM uint16_t STALL_DET_EN		: 2;
+			__IM  uint16_t MOT_STALLED		: 1;
+			__IOM uint16_t STOP_ON_STALL	: 1;
+		} bit;
+	} SDR1;
+
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+			__IOM uint16_t MAX_COMM_PR		: 16;
+		} bit;
+	} SDR2;
 
 	union
 	{
@@ -236,7 +261,8 @@ typedef struct
 
         struct
         {
-                  uint16_t			    : 6;
+                  uint16_t			    : 5;
+            __IOM uint16_t ALT_CFG      : 1;
             __IM  uint16_t BUSY 		: 1;
             __IOM uint16_t CLK_PSC      : 7;
             __IOM uint16_t POL          : 1;
