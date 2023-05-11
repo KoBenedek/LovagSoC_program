@@ -37,7 +37,7 @@ void Motor_Init(void)
     MOTVEZ->OLRR1.bit.OL_RAMP_CONST = 5u;
     MOTVEZ->OLRR1.bit.OL_RAMP_FINAL = 6000u;
     MOTVEZ->OLRR2.bit.OL_RAMP_START = 35000u;
-    MOTVEZ->OLRR3.bit.COAST_LOCK_PR = 25000u;
+    MOTVEZ->OLRR3.bit.COAST_LOCK_PR = 15000u;
     MOTVEZ->PDR.bit.BEMF_FILT_CYCLES = 10u;
     MOTVEZ->PDR.bit.BEMF_FILT_EN = 1u;
     MOTVEZ->PDR.bit.DEMAG_EN = 1u;
@@ -46,8 +46,9 @@ void Motor_Init(void)
     MOTVEZ->PWMCR.bit.PWM_INT_GEN = 1u;
     MOTVEZ->PWMCR.bit.PWM_TIM_PSC = 5u;
 
-    MOTVEZ->SDR1.bit.STOP_ON_STALL = 0u;
+    MOTVEZ->SDR1.bit.STOP_ON_STALL = 1u;
     MOTVEZ->SDR1.bit.STALL_DET_EN = 1u;
+    MOTVEZ->SDR1.bit.MIN_COMM_PR = 500u;
     MOTVEZ->SDR2.bit.MAX_COMM_PR = 0xFFFEu;
 
     //Enable the inverter circuit.
@@ -72,7 +73,29 @@ void Motor_Stop(void) { MOTVEZ->CCONR1.bit.MOT_EN = 0u;}
  * @return true 
  * @return false 
  */
-bool Motor_Running(void) { return MOTVEZ->CCONR1.bit.MOT_EN; } //Not sufficient if motor stalls!
+bool Motor_Running(void)
+{ 
+    return (MOTVEZ->CCONR1.bit.MOT_EN && !MOTVEZ->SDR1.bit.MOT_STALLED);
+}
+
+/**
+ * @brief Clears the motor stalled status.
+ * 
+ */
+void Motor_ClearError(void)
+{
+    bool StatusSave = MOTVEZ->CCONR1.bit.MOT_EN;
+    MOTVEZ->CCONR1.bit.MOT_EN = 0u;
+    MOTVEZ->CCONR1.bit.MOT_EN = StatusSave;
+}
+
+/**
+ * @brief Returns the motor stall status.
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Motor_Stalled(void) { return MOTVEZ->SDR1.bit.MOT_STALLED; }
 
 /**
  * @brief Sets the duty cycle of the inverter power stage.
