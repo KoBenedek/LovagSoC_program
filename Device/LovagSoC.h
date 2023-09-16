@@ -41,11 +41,13 @@ typedef struct
 			__IOM uint16_t BEMF_FILT_EN		: 1;
             __IOM uint16_t PWM_SYNC         : 2;
             __IOM uint16_t DEMAG_EN         : 1;
-            __IOM uint16_t MASK_EN          : 1;
+			__IOM uint16_t MASK_EN			: 1;
             __IM  uint16_t POS_PTRN         : 3;
             __IOM uint16_t HALL_EN          : 1;
 		} bit;
 	} PDR;
+
+	__IM uint16_t RESERVED_1[7];
 
 	union
 	{
@@ -65,7 +67,7 @@ typedef struct
 		{
 				  uint16_t					: 6;
 			__IOM uint16_t COAST_LOCK_CNT	: 5;
-                  uint16_t                  : 1;
+            __IOM uint16_t EN_CTRL_MOT_EN   : 1;
             __IOM uint16_t SYNC_MOT_MODE    : 1;
             __IOM uint16_t MOT_BREAK        : 1;
             __IOM uint16_t MOT_DIR          : 1;
@@ -116,7 +118,7 @@ typedef struct
 		} bit;
 	} OLRR3;
 
-    union
+	union
 	{
 		__IOM uint16_t reg;
 
@@ -152,6 +154,8 @@ typedef struct
 		} bit;
 	} PWMCR;
 
+	__IM uint16_t RESERVED_2[7];
+
 	union
 	{
 		__IOM uint16_t reg;
@@ -163,6 +167,8 @@ typedef struct
 			__IOM uint16_t FET_ATOMIC_SET	: 1;
 		} bit;
 	} OCR;
+
+	__IM uint16_t RESERVED_3[7];
 
 } MotVez_Typedef;
 
@@ -316,10 +322,10 @@ typedef struct
     } DAT;
 } UART_Typedef;
 
-#define MOTVEZ_BASE 0x2002U
-#define GPIO_BASE   0x2080U
-#define SPI_BASE    0x2088U
-#define UART_BASE   0x2090U
+#define MOTVEZ_BASE 0x10000U
+#define GPIO_BASE   0x10400U
+#define SPI_BASE    0x10800U
+#define UART_BASE   0x10C00U
 
 #define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
