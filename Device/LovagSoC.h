@@ -162,7 +162,11 @@ typedef struct
 
 		struct
 		{
-				  uint16_t					: 9;
+				  uint16_t					: 5;
+			__IOM uint16_t HIGH_Z_O			: 1;
+			__IOM uint16_t LS_O_POL			: 1;
+			__IOM uint16_t HS_O_POL			: 1;
+				  uint16_t					: 1;
 			__IOM uint16_t FET_STATES		: 6;
 			__IOM uint16_t FET_ATOMIC_SET	: 1;
 		} bit;
