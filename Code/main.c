@@ -12,6 +12,9 @@
  *  
  */
 
+//TODO: Future implementation!
+//#include <stdio.h>
+
 #include "LovagSoC.h"
 #include "SPI.h"
 #include "UART.h"
@@ -19,7 +22,7 @@
 #include "DRV8305.h"
 #include "ADC120IPT.h"
 
-void ElsoFuggveny(uint16_t count);
+volatile uint32_t milis_count = 0;
 
 /**
  * @brief The main function.
@@ -28,6 +31,7 @@ void ElsoFuggveny(uint16_t count);
  */
 int main(void)
 {
+    milis_count = CPU_Time();
     GPIO->DIR.reg16 = 0xFFFFu;
 
     Motor_Init();
@@ -62,6 +66,8 @@ int main(void)
             else if(Motor_Stalled())
             {
                 Motor_ClearError();
+                //TODO: Future implementation!
+                //printf("Printf works!\n\r");
                 UART_SendString("Stalled. Restarting. \n\r");
             }
             else 
@@ -70,24 +76,15 @@ int main(void)
                 UART_SendString("Started.\n\r");
             }
         }
-        for (uint8_t i = 0; i < 2; i++)
+
+        while((milis_count + 3000) != CPU_Time())
         {
-            ElsoFuggveny(65535);
+            GPIO->STATE.reg16 = CPU_Time();
         }
+        milis_count = CPU_Time();
+        
         GPIO->STATE.reg16 = ADC120_Read(ADC120_Channel3);
     }
 
     return 0;
-}
-
-void ElsoFuggveny(uint16_t count)
-{
-    for (volatile uint32_t i = 0; i < 16; i++)
-    {
-        volatile uint16_t delay_cnt = 0;
-        for (volatile uint16_t j = 0; j < count; j++)
-        {
-            delay_cnt++;
-        }
-    }
 }

@@ -336,4 +336,8 @@ typedef struct
 #define SPI         ((SPI_Typedef*)SPI_BASE)
 #define UART        ((UART_Typedef*)UART_BASE)
 
+uint32_t CPU_Time(void);
+uint32_t CPU_Cycle(void);
+uint32_t CPU_InstRet(void);
+
 #endif /* LovagSoC_H_ */
