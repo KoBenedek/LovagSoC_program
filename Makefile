@@ -28,7 +28,7 @@ MAP = $(OUTPUT).map
 
 ASMCFLAGS = -march=rv32i -mabi=ilp32 
 CCFLAGS = -march=rv32i -mabi=ilp32 $(INCS) -g -O0 -no-pie -Wall -funsigned-char
-LDFLAGS = -m elf32lriscv -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
+LDFLAGS = -lgcc -m elf32lriscv -Map=$(PATH_TO_BUILD)/$(MAP) --print-memory-usage
 E2HFLAGS= --bit-width 32
 # -mno-relax
 # -no-relax
@@ -50,7 +50,9 @@ INCS += 								\
 	-I ./Code/UART						\
 	-I ./Code/DRV8305					\
 	-I ./Code/ADC120IPT					\
-	-I ./Code/Motor
+	-I ./Code/Motor						
+#	-I ./Code/libfemto/include			TODO:Future implementation!
+#	-I ./Code/libfemto/std
 
 SRCS +=									\
 	main.c								\
@@ -58,13 +60,19 @@ SRCS +=									\
 	UART/UART.c							\
 	DRV8305/DRV8305.c					\
 	ADC120IPT/ADC120IPT.c				\
-	Motor/Motor.c
+	Motor/Motor.c						
+#	libfemto/std/printf.c				TODO:Future implementation!
+#	libfemto/std/vprintf.c				
+#	libfemto/std/vsnprintf.c			
+#	libfemto/std/putchar.c
 
 OUTPUT = LovagSoC_program
 
 ASM_OBJ = $(addprefix $(PATH_TO_STARTUP)/, $(subst .S,.o, $(STARTUP)))
 
 OBJS = $(addprefix $(PATH_TO_SRCS)/, $(subst .c,.o, $(SRCS)))
+
+OBJS += $(PATH_TO_STARTUP)/LovagSoC.o
 
 build: directory $(OUTPUT).elf $(OUTPUT)_objview.txt  remove-temp $(OUTPUT).bin $(OUTPUT)_ihex.hex $(OUTPUT).v $(OUTPUT).hex $(OUTPUT)_elfview.txt
 	@echo Build complete.
@@ -82,7 +90,7 @@ OBJS_PATH = $(addprefix $(PATH_TO_OBJS)/, $(notdir $(OBJS)))
 ASM_OBJ_PATH = $(addprefix $(PATH_TO_OBJS)/, $(notdir $(ASM_OBJ)))
 
 $(OUTPUT).elf: $(ASM_OBJ) $(OBJS) directory
-	@$(LD) $(ASM_OBJ_PATH) $(OBJS_PATH) -o $(PATH_TO_BUILD)/$@ -T $(PATH_TO_LD)/$(ASM_LINKER).ld $(LDFLAGS)
+	@$(LD) -L/opt/riscv/lib/gcc/riscv64-unknown-elf/12.2.0/rv32i/ilp32 $(ASM_OBJ_PATH) $(OBJS_PATH) -o $(PATH_TO_BUILD)/$@ -T $(PATH_TO_LD)/$(ASM_LINKER).ld $(LDFLAGS)
 
 $(OUTPUT).bin: $(OUTPUT).elf
 	@$(OBJCOPY) $(PATH_TO_BUILD)/$(OUTPUT).elf $(PATH_TO_BUILD)/$@ -O binary

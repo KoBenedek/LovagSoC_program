@@ -162,7 +162,11 @@ typedef struct
 
 		struct
 		{
-				  uint16_t					: 9;
+				  uint16_t					: 5;
+			__IOM uint16_t HIGH_Z_O			: 1;
+			__IOM uint16_t LS_O_POL			: 1;
+			__IOM uint16_t HS_O_POL			: 1;
+				  uint16_t					: 1;
 			__IOM uint16_t FET_STATES		: 6;
 			__IOM uint16_t FET_ATOMIC_SET	: 1;
 		} bit;
@@ -331,5 +335,9 @@ typedef struct
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
 #define SPI         ((SPI_Typedef*)SPI_BASE)
 #define UART        ((UART_Typedef*)UART_BASE)
+
+uint32_t CPU_Time(void);
+uint32_t CPU_Cycle(void);
+uint32_t CPU_InstRet(void);
 
 #endif /* LovagSoC_H_ */

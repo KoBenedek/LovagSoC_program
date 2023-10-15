@@ -16,6 +16,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 void UART_Init(void);
 void UART_tx(uint8_t data);
