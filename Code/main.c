@@ -66,8 +66,7 @@ int main(void)
             else if(Motor_Stalled())
             {
                 Motor_ClearError();
-                //TODO: Future implementation!
-                //printf("Printf works!\n\r");
+                printf("Printf works!\n\r");
                 UART_SendString("Stalled. Restarting. \n\r");
             }
             else 
