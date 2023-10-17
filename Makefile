@@ -77,6 +77,10 @@ OBJS += $(PATH_TO_STARTUP)/LovagSoC.o
 build: directory $(OUTPUT).elf $(OUTPUT)_objview.txt  remove-temp $(OUTPUT).bin $(OUTPUT)_ihex.hex $(OUTPUT).v $(OUTPUT).hex $(OUTPUT)_elfview.txt
 	@echo Build complete.
 
+setup:
+	@chmod +x ./Init/setup.sh
+	@./Init/setup.sh
+
 directory:
 	@mkdir -p $(PATH_TO_BUILD)
 
