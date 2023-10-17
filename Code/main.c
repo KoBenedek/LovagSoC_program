@@ -12,8 +12,7 @@
  *  
  */
 
-//TODO: Future implementation!
-//#include <stdio.h>
+#include <stdio.h>
 
 #include "LovagSoC.h"
 #include "SPI.h"
@@ -22,7 +21,10 @@
 #include "DRV8305.h"
 #include "ADC120IPT.h"
 
-volatile uint32_t milis_count = 0;
+uint32_t milis_count = 0;
+uint32_t successful_startups = 0;
+uint32_t startup_attempts = 0;
+float    success_rate = 0;
 
 /**
  * @brief The main function.
@@ -46,38 +48,44 @@ int main(void)
 
     DRV8305_Enable();
     Motor_Start();
+    startup_attempts++;
 
     while(1)
     {
         if(DRV8305_Read(DRV8305_WNWR) != 0)
         {
-            UART_SendString("Undervoltage!\n\r");
+            UART_SendString("Undervoltage!");
             DRV8305_Disable();
             Motor_Stop();
         }
         else
         {
             DRV8305_Enable();
-            if(Motor_Running())
+            if(Motor_Running() & !Motor_Stalled())
             {
                 Motor_Stop();
-                UART_SendString("Stopped.\n\r");
+                successful_startups++;
             }
             else if(Motor_Stalled())
             {
                 Motor_ClearError();
-                //TODO: Future implementation!
-                //printf("Printf works!\n\r");
-                UART_SendString("Stalled. Restarting. \n\r");
+                startup_attempts++;
             }
             else 
             {
                 Motor_Start();
-                UART_SendString("Started.\n\r");
+                startup_attempts++;
             }
         }
+        
+        success_rate = (float)(100 * successful_startups) / (float)startup_attempts;
+        if(Motor_Running())
+        {
+            printf("\e[1;1H\e[2J");
+            printf("\rStartup success rate is %d,%d percent.", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
+        }
 
-        while((milis_count + 3000) != CPU_Time())
+        while((milis_count + 1000) != CPU_Time())
         {
             GPIO->STATE.reg16 = CPU_Time();
         }

@@ -50,9 +50,9 @@ INCS += 								\
 	-I ./Code/UART						\
 	-I ./Code/DRV8305					\
 	-I ./Code/ADC120IPT					\
-	-I ./Code/Motor						
-#	-I ./Code/libfemto/include			TODO:Future implementation!
-#	-I ./Code/libfemto/std
+	-I ./Code/Motor						\
+	-I ./Code/libfemto/include			\
+	-I ./Code/libfemto/std
 
 SRCS +=									\
 	main.c								\
@@ -60,11 +60,11 @@ SRCS +=									\
 	UART/UART.c							\
 	DRV8305/DRV8305.c					\
 	ADC120IPT/ADC120IPT.c				\
-	Motor/Motor.c						
-#	libfemto/std/printf.c				TODO:Future implementation!
-#	libfemto/std/vprintf.c				
-#	libfemto/std/vsnprintf.c			
-#	libfemto/std/putchar.c
+	Motor/Motor.c						\
+	libfemto/std/printf.c				\
+	libfemto/std/vprintf.c				\
+	libfemto/std/vsnprintf.c			\
+	libfemto/std/putchar.c
 
 OUTPUT = LovagSoC_program
 
@@ -76,6 +76,10 @@ OBJS += $(PATH_TO_STARTUP)/LovagSoC.o
 
 build: directory $(OUTPUT).elf $(OUTPUT)_objview.txt  remove-temp $(OUTPUT).bin $(OUTPUT)_ihex.hex $(OUTPUT).v $(OUTPUT).hex $(OUTPUT)_elfview.txt
 	@echo Build complete.
+
+setup:
+	@chmod +x ./Init/setup.sh
+	@./Init/setup.sh
 
 directory:
 	@mkdir -p $(PATH_TO_BUILD)
@@ -114,10 +118,10 @@ program: erase
 	@python3 upload_prog.py program
 
 read:
-	@python3 upload_prog.py read 2048 read_code.txt
+	@python3 upload_prog.py read 4096 read_code.txt
 
 erase:
-	@python3 upload_prog.py erase 2048
+	@python3 upload_prog.py erase 4096
 
 remove-temp:
 	@-rm $(OBJS_PATH)

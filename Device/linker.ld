@@ -13,8 +13,8 @@
 
 MEMORY
 {
-   ROM(rx) : ORIGIN = 0x0000, LENGTH = 6144 /* 6kB ROM */
-   BRAM(rwx) : ORIGIN = 6144, LENGTH = 2048 /* 2kB RAM */
+   ROM(rx) : ORIGIN = 0x0000, LENGTH = 15360 /* 15kB ROM */
+   BRAM(rwx) : ORIGIN = 15360, LENGTH = 1024 /* 1kB RAM */
 }
 SECTIONS
 {

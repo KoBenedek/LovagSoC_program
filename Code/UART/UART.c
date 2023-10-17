@@ -62,10 +62,9 @@ bool UART_busy(void) { return UART->CTRL.bit.BUSY; }
 
 bool UART_data_ready(void) { return UART->CTRL.bit.DAT_RDY; }
 
-//TODO: Future implementation!
-/*int putchar(int ch)
+int putchar(int ch)
 {
     while (UART_busy());
     UART_tx((uint8_t) ch);
     return ch;
-}*/
+}

@@ -48,7 +48,7 @@ void Motor_Init(void)
 
     MOTVEZ->SDR1.bit.STOP_ON_STALL = 1u;
     MOTVEZ->SDR1.bit.STALL_DET_EN = 3u;
-    MOTVEZ->SDR1.bit.MIN_COMM_PR = 132u;
+    MOTVEZ->SDR1.bit.MIN_COMM_PR = 146u;
     MOTVEZ->SDR2.bit.MAX_COMM_PR = 0xFFFEu;
 
     MOTVEZ->OCR.bit.HS_O_POL = 1u;
