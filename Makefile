@@ -114,10 +114,10 @@ program: erase
 	@python3 upload_prog.py program
 
 read:
-	@python3 upload_prog.py read 2048 read_code.txt
+	@python3 upload_prog.py read 4096 read_code.txt
 
 erase:
-	@python3 upload_prog.py erase 2048
+	@python3 upload_prog.py erase 4096
 
 remove-temp:
 	@-rm $(OBJS_PATH)

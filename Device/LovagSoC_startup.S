@@ -13,7 +13,7 @@
 
 _start:
 
-     li   sp,0x2000
+     li   sp,16384
 
 # zero-init bss section:
      la a0, _sbss
