@@ -1,4 +1,17 @@
 #!/bin/bash
+#
+#  Copyright (C) 2023 Benedek Kocsis
+#
+#  File name:      setup.sh
+#  Company:        University of Miskolc
+#  Department:     Department of Automation and Infocommunication
+#  Author:         Benedek Kocsis
+#
+#  Title:          Setup script
+#  
+#  Description:    Shell script to setup the elf2hex file and the necessary 
+#                  libfemto library.
+#
 
 cd ..
 git clone https://github.com/michaeljclark/riscv-probe.git
@@ -29,7 +42,7 @@ then
     newstuff="/opt/riscv/bin/riscv64-unknown-elf-objcopy"
     sed -i "s|$oldstuff|$newstuff|g" LovagSoC_program/Device/Utility/elf2hex
     oldstuff="@BIN2HEX@"
-    newstuff="/usr/local/bin/riscv32-unknown-elf-bin2hex"
+    newstuff="/usr/local/bin/riscv64-unknown-elf-bin2hex"
     sed -i "s|$oldstuff|$newstuff|g" LovagSoC_program/Device/Utility/elf2hex
     rm -r -f elf2hex
     exit 0
