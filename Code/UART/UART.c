@@ -25,9 +25,9 @@ void UART_Init(void)
     UART->CTRL.bit.PAR = 0u;
     UART->CTRL.bit.STOPB = 0u;
     UART->CTRL.bit.DAT_BITS = 3u;
-    UART->PSCR.bit.CLK_PSC = 54u; /** TODO: hardware bug probably... */
+    UART->PSCR.bit.CLK_PSC = 54u;
 
-    /** TODO: This doesnt work??? hardware bug... */
+    /** TODO: This doesnt work. Emits garbage, hardware bug... */
     //UART->CTRL.bit.DAT_BITS = 3u;
     //UART->CTRL.bit.PAR = 0u;
     //UART->CTRL.bit.STOPB = 0u;

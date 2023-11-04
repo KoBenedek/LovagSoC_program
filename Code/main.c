@@ -21,6 +21,16 @@
 #include "DRV8305.h"
 #include "ADC120IPT.h"
 
+#define LOVAGSOC_LOGO                                           \
+"\x1b[36m""\n\r  _                            _____        _____ \n\r"    \
+" | |                          / ____|      / ____|\n\r"        \
+" | |     _____   ____ _  __ _| (___   ___ | |     \n\r"        \
+" | |    / _ \\ \\ / / _` |/ _` |\\___ \\ / _ \\| |     \n\r"   \
+" | |___| (_) \\ V / (_| | (_| |____) | (_) | |____ \n\r"       \
+" |______\\___/ \\_/ \\__,_|\\__, |_____/ \\___/ \\_____|\n\r"  \
+"                         __/ |                    \n\r"        \
+"                        |___/                     \n\r""\x1b[0m"
+
 uint32_t milis_count = 0;
 uint32_t successful_startups = 0;
 uint32_t startup_attempts = 0;
@@ -33,12 +43,20 @@ float    success_rate = 0;
  */
 int main(void)
 {
-    milis_count = CPU_Time();
-    GPIO->DIR.reg16 = 0xFFFFu;
-
+    UART_Init();
     Motor_Init();
     SPI_Init();
     DRV8305_Init();
+    ADC120_Init();
+
+    UART_SendString(LOVAGSOC_LOGO);
+    printf("Version: development v%d.%d%d.\n\r", 
+            (int)((CPU_READ_CSR(CSR_mImpID) >> 16) & 0xFF), 
+            (int)((CPU_READ_CSR(CSR_mImpID) >> 8) & 0xFF), 
+            (int)(CPU_READ_CSR(CSR_mImpID) & 0xFF));
+
+    milis_count = CPU_Time();
+    GPIO->DIR.reg16 = 0xFFFFu;
 
     DRV8305_ErrorClear();
 
@@ -81,7 +99,7 @@ int main(void)
         success_rate = (float)(100 * successful_startups) / (float)startup_attempts;
         if(Motor_Running())
         {
-            printf("\e[1;1H\e[2J");
+            printf("\33[2K");
             printf("\rStartup success rate is %d,%d percent.", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
         }
 

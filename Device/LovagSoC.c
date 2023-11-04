@@ -15,21 +15,15 @@
 
 uint32_t CPU_Time(void)
 {
-   uint32_t time;
-   __asm__ volatile ("csrr    %0, time" : "=r" (time) : : );
-   return time;
+   return CPU_READ_CSR(CSR_Time);
 }
 
 uint32_t CPU_Cycle(void)
 {
-   uint32_t cycle;
-   __asm__ volatile ("csrr    %0, cycle" : "=r" (cycle) : : );
-   return cycle;
+   return CPU_READ_CSR(CSR_Cycle);
 }
 
 uint32_t CPU_InstRet(void)
 {
-   uint32_t instret;
-   __asm__ volatile ("csrr    %0, instret" : "=r" (instret) : : );
-   return instret;
+   return CPU_READ_CSR(CSR_InstRet);
 }
