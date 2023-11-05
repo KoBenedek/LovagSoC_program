@@ -132,6 +132,9 @@ resume:
 reset:
 	@python3 upload_prog.py reset
 
+step:
+	@python3 upload_prog.py step
+
 remove-temp:
 	@-rm $(OBJS_PATH)
 	@-rm $(ASM_OBJ_PATH)

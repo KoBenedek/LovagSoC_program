@@ -103,6 +103,9 @@ try:
         read_data = ser.readline().decode("utf-8").replace("\n", "")
         if read_data.strip() == "ack":
             print("CPU halted.")
+            read_data = ser.readline().decode("utf-8").replace("\n", "")
+            print(str("{:08x}".format(int(read_data))))
+            print(str(int(read_data) >> 2))
             exit()
         elif read_data.strip() == "error":
             print("Halt failed.")
@@ -124,6 +127,17 @@ try:
             exit()
         elif read_data.strip() == "error":
             print("Reset failed.")
+            exit()
+    elif sys.argv[1] == "step":
+        ser.write(("step\n").encode())
+        read_data = ser.readline().decode("utf-8").replace("\n", "")
+        if read_data.strip() == "ack":
+            read_data = ser.readline().decode("utf-8").replace("\n", "")
+            print(str("{:08x}".format(int(read_data))))
+            print(str(int(read_data) >> 2))
+            exit()
+        elif read_data.strip() == "error":
+            print("Step failed.")
             exit()
     ser.close()
     exit()
