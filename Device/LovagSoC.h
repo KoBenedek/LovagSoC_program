@@ -336,6 +336,17 @@ typedef struct
 #define SPI         ((SPI_Typedef*)SPI_BASE)
 #define UART        ((UART_Typedef*)UART_BASE)
 
+#define CPU_READ_CSR(address)     ({uint32_t data; __asm__ volatile ("csrr    %0, %1" : "=r" (data) : "n" (address) : ); data;})
+
+typedef enum
+{
+    CSR_Cycle = 0xC00,
+    CSR_Time = 0xC01,
+    CSR_InstRet = 0xC02,
+    CSR_mImpID = 0xF13
+} CSR_t;
+
+uint32_t CPU_ReadCSR(CSR_t address);
 uint32_t CPU_Time(void);
 uint32_t CPU_Cycle(void);
 uint32_t CPU_InstRet(void);

@@ -123,6 +123,18 @@ read:
 erase:
 	@python3 upload_prog.py erase 4096
 
+halt:
+	@python3 upload_prog.py halt
+
+resume:
+	@python3 upload_prog.py resume
+
+reset:
+	@python3 upload_prog.py reset
+
+step:
+	@python3 upload_prog.py step
+
 remove-temp:
 	@-rm $(OBJS_PATH)
 	@-rm $(ASM_OBJ_PATH)
