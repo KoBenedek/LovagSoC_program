@@ -35,6 +35,8 @@ uint32_t milis_count = 0;
 uint32_t successful_startups = 0;
 uint32_t startup_attempts = 0;
 float    success_rate = 0;
+uint32_t uart_tx_cnt = 0;
+uint32_t spi_tx_cnt = 0;
 
 /**
  * @brief The main function.
@@ -50,7 +52,7 @@ int main(void)
     ADC120_Init();
 
     UART_SendString(LOVAGSOC_LOGO);
-    printf("Version: development v%d.%d%d.\n\r", 
+    printf("Version: development v%d.%d%d.\n\n\r", 
             (int)((CPU_READ_CSR(CSR_mImpID) >> 16) & 0xFF), 
             (int)((CPU_READ_CSR(CSR_mImpID) >> 8) & 0xFF), 
             (int)(CPU_READ_CSR(CSR_mImpID) & 0xFF));
@@ -99,8 +101,12 @@ int main(void)
         success_rate = (float)(100 * successful_startups) / (float)startup_attempts;
         if(Motor_Running())
         {
+            printf("\x1b[A");
             printf("\33[2K");
-            printf("\rStartup success rate is %d,%d percent.", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
+            printf("\rStartup success rate is %d,%d percent.\n", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
+            printf("\33[2K");
+            printf("\rNumber of TX frames: UART: %d, SPI, %d\n", (int)uart_tx_cnt, (int)spi_tx_cnt);
+            printf("\x1b[A");
         }
 
         while((milis_count + 1000) != CPU_Time())
@@ -113,4 +119,16 @@ int main(void)
     }
 
     return 0;
+}
+
+__attribute__ ((interrupt ("machine"))) void UART_IRQHandler(void)
+{
+    UART->IR.bit.TXIP = 1u;
+    uart_tx_cnt++;
+}
+
+__attribute__ ((interrupt ("machine"))) void SPI_IRQHandler(void)
+{
+    SPI->IR.bit.TXIP = 1u;
+    spi_tx_cnt++;
 }
