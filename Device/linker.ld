@@ -22,7 +22,9 @@ SECTIONS
     .text :
     {
         . = ALIGN(4);
-        ./Device/LovagSoC_startup.o (.text)
+        ./Device/LovagSoC_startup.o (.text.VectorTable)
+        ./Device/LovagSoC_startup.o (.text.Reset_Handler)
+        ./Device/LovagSoC_startup.o (.text.Default_Handler)
         *(.text)
         *(.rodata)
         *(.srodata)

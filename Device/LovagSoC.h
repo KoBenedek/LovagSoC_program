@@ -261,6 +261,132 @@ typedef struct
             __IOM uint32_t PIN31		: 1;
         } bit;
     } DIR;
+
+    union
+    {
+		__IOM uint32_t reg32;
+        __IOM uint16_t reg16;
+
+        struct
+        {
+            __IOM uint32_t PIN0			: 1;
+            __IOM uint32_t PIN1			: 1;
+            __IOM uint32_t PIN2			: 1;
+            __IOM uint32_t PIN3			: 1;
+            __IOM uint32_t PIN4			: 1;
+            __IOM uint32_t PIN5			: 1;
+            __IOM uint32_t PIN6			: 1;
+            __IOM uint32_t PIN7			: 1;
+            __IOM uint32_t PIN8			: 1;
+            __IOM uint32_t PIN9			: 1;
+            __IOM uint32_t PIN10		: 1;
+            __IOM uint32_t PIN11		: 1;
+            __IOM uint32_t PIN12		: 1;
+            __IOM uint32_t PIN13		: 1;
+            __IOM uint32_t PIN14		: 1;
+            __IOM uint32_t PIN15		: 1;
+            __IOM uint32_t PIN16		: 1;
+            __IOM uint32_t PIN17		: 1;
+            __IOM uint32_t PIN18		: 1;
+            __IOM uint32_t PIN19		: 1;
+            __IOM uint32_t PIN20		: 1;
+            __IOM uint32_t PIN21		: 1;
+            __IOM uint32_t PIN22		: 1;
+            __IOM uint32_t PIN23		: 1;
+            __IOM uint32_t PIN24		: 1;
+            __IOM uint32_t PIN25		: 1;
+            __IOM uint32_t PIN26		: 1;
+            __IOM uint32_t PIN27		: 1;
+            __IOM uint32_t PIN28		: 1;
+            __IOM uint32_t PIN29		: 1;
+            __IOM uint32_t PIN30		: 1;
+            __IOM uint32_t PIN31		: 1;
+        } bit;
+    } REIE;
+
+    union
+    {
+		__IOM uint32_t reg32;
+        __IOM uint16_t reg16;
+
+        struct
+        {
+            __IOM uint32_t PIN0			: 1;
+            __IOM uint32_t PIN1			: 1;
+            __IOM uint32_t PIN2			: 1;
+            __IOM uint32_t PIN3			: 1;
+            __IOM uint32_t PIN4			: 1;
+            __IOM uint32_t PIN5			: 1;
+            __IOM uint32_t PIN6			: 1;
+            __IOM uint32_t PIN7			: 1;
+            __IOM uint32_t PIN8			: 1;
+            __IOM uint32_t PIN9			: 1;
+            __IOM uint32_t PIN10		: 1;
+            __IOM uint32_t PIN11		: 1;
+            __IOM uint32_t PIN12		: 1;
+            __IOM uint32_t PIN13		: 1;
+            __IOM uint32_t PIN14		: 1;
+            __IOM uint32_t PIN15		: 1;
+            __IOM uint32_t PIN16		: 1;
+            __IOM uint32_t PIN17		: 1;
+            __IOM uint32_t PIN18		: 1;
+            __IOM uint32_t PIN19		: 1;
+            __IOM uint32_t PIN20		: 1;
+            __IOM uint32_t PIN21		: 1;
+            __IOM uint32_t PIN22		: 1;
+            __IOM uint32_t PIN23		: 1;
+            __IOM uint32_t PIN24		: 1;
+            __IOM uint32_t PIN25		: 1;
+            __IOM uint32_t PIN26		: 1;
+            __IOM uint32_t PIN27		: 1;
+            __IOM uint32_t PIN28		: 1;
+            __IOM uint32_t PIN29		: 1;
+            __IOM uint32_t PIN30		: 1;
+            __IOM uint32_t PIN31		: 1;
+        } bit;
+    } FEIE;
+
+    union
+    {
+		__IOM uint32_t reg32;
+        __IOM uint16_t reg16;
+
+        struct
+        {
+            __IOM uint32_t PIN0			: 1;
+            __IOM uint32_t PIN1			: 1;
+            __IOM uint32_t PIN2			: 1;
+            __IOM uint32_t PIN3			: 1;
+            __IOM uint32_t PIN4			: 1;
+            __IOM uint32_t PIN5			: 1;
+            __IOM uint32_t PIN6			: 1;
+            __IOM uint32_t PIN7			: 1;
+            __IOM uint32_t PIN8			: 1;
+            __IOM uint32_t PIN9			: 1;
+            __IOM uint32_t PIN10		: 1;
+            __IOM uint32_t PIN11		: 1;
+            __IOM uint32_t PIN12		: 1;
+            __IOM uint32_t PIN13		: 1;
+            __IOM uint32_t PIN14		: 1;
+            __IOM uint32_t PIN15		: 1;
+            __IOM uint32_t PIN16		: 1;
+            __IOM uint32_t PIN17		: 1;
+            __IOM uint32_t PIN18		: 1;
+            __IOM uint32_t PIN19		: 1;
+            __IOM uint32_t PIN20		: 1;
+            __IOM uint32_t PIN21		: 1;
+            __IOM uint32_t PIN22		: 1;
+            __IOM uint32_t PIN23		: 1;
+            __IOM uint32_t PIN24		: 1;
+            __IOM uint32_t PIN25		: 1;
+            __IOM uint32_t PIN26		: 1;
+            __IOM uint32_t PIN27		: 1;
+            __IOM uint32_t PIN28		: 1;
+            __IOM uint32_t PIN29		: 1;
+            __IOM uint32_t PIN30		: 1;
+            __IOM uint32_t PIN31		: 1;
+        } bit;
+    } IRP;
 } GPIO_Typedef;
 
 typedef struct
@@ -279,6 +405,18 @@ typedef struct
             __IOM uint16_t PHA          : 1;
         } bit;
     } CTRL;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+                  uint16_t              : 14;
+            __IOM uint16_t TXIP         : 1;
+            __IOM uint16_t TXIE         : 1;
+        } bit;
+    } IR;
 
     union
     {
@@ -324,17 +462,126 @@ typedef struct
             __IOM uint16_t DAT          : 16;
         } bit;
     } DAT;
+
+	__IM uint16_t RESERVED_4[1];
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+                  uint16_t              : 12;
+            __IOM uint16_t TXIP         : 1;
+            __IOM uint16_t RXIP         : 1;
+            __IOM uint16_t TXIE         : 1;
+            __IOM uint16_t RXIE         : 1;
+        } bit;
+    } IR;
 } UART_Typedef;
+
+typedef struct
+{
+	__IM uint32_t RESERVED_5[1];
+
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+            __IOM uint32_t IPR1         : 4;
+                  uint32_t              : 28;
+        } bit;
+    } IPR1;
+
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+            __IOM uint32_t IPR2         : 4;
+                  uint32_t              : 28;
+        } bit;
+    } IPR2;
+    
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+            __IOM uint32_t IPR3         : 4;
+                  uint32_t              : 28;
+        } bit;
+    } IPR3;
+    
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+            __IOM uint32_t IPR4         : 4;
+                  uint32_t              : 28;
+        } bit;
+    } IPR4;
+
+    union
+    {
+        __IM  uint32_t reg;
+
+        struct
+        {
+                  uint32_t              : 1;
+            __IM  uint32_t IP1          : 1;
+            __IM  uint32_t IP2          : 1;
+            __IM  uint32_t IP3          : 1;
+            __IM  uint32_t IP4          : 1;
+                  uint32_t              : 27;
+        } bit;
+    } IPB;
+
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+                  uint32_t              : 1;
+            __IOM uint32_t IE1          : 1;
+            __IOM uint32_t IE2          : 1;
+            __IOM uint32_t IE3          : 1;
+            __IOM uint32_t IE4          : 1;
+                  uint32_t              : 27;
+        } bit;
+    } IE;
+    
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+            __IOM uint32_t ITH         : 32;
+        } bit;
+    } ITH;
+
+	__IM uint32_t RESERVED_6[1];
+} PLIC_Typedef;
 
 #define MOTVEZ_BASE 0x10000U
 #define GPIO_BASE   0x10400U
 #define SPI_BASE    0x10800U
 #define UART_BASE   0x10C00U
+#define PLIC_BASE   0x11000U
 
 #define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
 #define SPI         ((SPI_Typedef*)SPI_BASE)
 #define UART        ((UART_Typedef*)UART_BASE)
+#define PLIC        ((PLIC_Typedef*)PLIC_BASE)
 
 #define CPU_READ_CSR(address)     ({uint32_t data; __asm__ volatile ("csrr    %0, %1" : "=r" (data) : "n" (address) : ); data;})
 
