@@ -105,7 +105,7 @@ int main(void)
             printf("\33[2K");
             printf("\rStartup success rate is %d,%d percent.\n", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
             printf("\33[2K");
-            printf("\rNumber of TX frames: UART: %d, SPI, %d\n", (int)uart_tx_cnt, (int)spi_tx_cnt);
+            printf("\rNumber of TX frames: UART: %d, SPI: %d.\n", (int)uart_tx_cnt, (int)spi_tx_cnt);
             printf("\x1b[A");
         }
 
@@ -131,4 +131,10 @@ __attribute__ ((interrupt ("machine"))) void SPI_IRQHandler(void)
 {
     SPI->IR.bit.TXIP = 1u;
     spi_tx_cnt++;
+}
+
+__attribute__ ((interrupt ("machine"))) void MotVez_IRQHandler(void)
+{
+    MOTVEZ->IR.bit.STALLIP = 1u;
+    printf("\x1B[31m""\tSTALL""\x1b[0m");
 }

@@ -47,7 +47,27 @@ typedef struct
 		} bit;
 	} PDR;
 
-	__IM uint16_t RESERVED_1[7];
+	union
+	{
+		__IOM uint16_t reg;
+
+		struct
+		{
+				  uint16_t					: 6;
+			__IOM uint16_t STALLIP			: 1;
+			__IOM uint16_t CLOCKIP			: 1;
+			__IOM uint16_t OLRIP			: 1;
+			__IOM uint16_t COMMIP			: 1;
+			__IOM uint16_t POSIP			: 1;
+			__IOM uint16_t STALLIE			: 1;
+			__IOM uint16_t CLOCKIE			: 1;
+			__IOM uint16_t OLRIE			: 1;
+			__IOM uint16_t COMMIE			: 1;
+			__IOM uint16_t POSIE			: 1;
+		} bit;
+    } IR;
+
+	__IM uint16_t RESERVED_1[6];
 
 	union
 	{
