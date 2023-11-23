@@ -547,6 +547,17 @@ typedef struct
                   uint32_t              : 28;
         } bit;
     } IPR4;
+    
+    union
+    {
+        __IOM uint32_t reg;
+
+        struct
+        {
+            __IOM uint32_t IPR5         : 4;
+                  uint32_t              : 28;
+        } bit;
+    } IPR5;
 
     union
     {
@@ -559,7 +570,8 @@ typedef struct
             __IM  uint32_t IP2          : 1;
             __IM  uint32_t IP3          : 1;
             __IM  uint32_t IP4          : 1;
-                  uint32_t              : 27;
+            __IM  uint32_t IP5          : 1;
+                  uint32_t              : 26;
         } bit;
     } IPB;
 
@@ -574,7 +586,8 @@ typedef struct
             __IOM uint32_t IE2          : 1;
             __IOM uint32_t IE3          : 1;
             __IOM uint32_t IE4          : 1;
-                  uint32_t              : 27;
+            __IOM uint32_t IE5          : 1;
+                  uint32_t              : 26;
         } bit;
     } IE;
     
@@ -591,17 +604,88 @@ typedef struct
 	__IM uint32_t RESERVED_6[1];
 } PLIC_Typedef;
 
+typedef struct
+{
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+                  uint16_t              : 14;
+            __IOM uint16_t RST          : 1;
+            __IOM uint16_t EN           : 1;
+        } bit;
+    } CTRL;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t PSC          : 16;
+        } bit;
+    } PSC;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t ARR          : 16;
+        } bit;
+    } ARR;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t CNT          : 16;
+        } bit;
+    } CNT;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+            __IOM uint16_t CMP          : 16;
+        } bit;
+    } CMP;
+
+    union
+    {
+        __IOM uint16_t reg;
+
+        struct
+        {
+                  uint16_t              : 12;
+            __IOM uint16_t OVFIP        : 1;
+            __IOM uint16_t CMIP         : 1;
+            __IOM uint16_t OVFIE        : 1;
+            __IOM uint16_t CMIE         : 1;
+        } bit;
+    } IR;
+} GPT_Typedef;
+
 #define MOTVEZ_BASE 0x10000U
 #define GPIO_BASE   0x10400U
 #define SPI_BASE    0x10800U
 #define UART_BASE   0x10C00U
 #define PLIC_BASE   0x11000U
+#define GPT_BASE    0x11400U
 
 #define MOTVEZ      ((MotVez_Typedef*)MOTVEZ_BASE)
 #define GPIO        ((GPIO_Typedef*)GPIO_BASE)
 #define SPI         ((SPI_Typedef*)SPI_BASE)
 #define UART        ((UART_Typedef*)UART_BASE)
 #define PLIC        ((PLIC_Typedef*)PLIC_BASE)
+#define GPT         ((GPT_Typedef*)GPT_BASE)
 
 #define CPU_READ_CSR(address)     ({uint32_t data; __asm__ volatile ("csrr    %0, %1" : "=r" (data) : "n" (address) : ); data;})
 

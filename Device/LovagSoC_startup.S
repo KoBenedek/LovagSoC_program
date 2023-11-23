@@ -64,6 +64,7 @@ VectorTable:
      j MotVez_IRQHandler      #MotVez Interrupt
      j SPI_IRQHandler         #SPI_Master Interrupt
      j UART_IRQHandler        #UART Interrupt
+     j GPT_IRQHandler         #GPT Interrupt
 
 .weak    CPU_TimTick_Handler
 .set     CPU_TimTick_Handler,Default_Handler
@@ -82,3 +83,6 @@ VectorTable:
 
 .weak    UART_IRQHandler
 .set     UART_IRQHandler,Default_Handler
+
+.weak    GPT_IRQHandler
+.set     GPT_IRQHandler,Default_Handler
