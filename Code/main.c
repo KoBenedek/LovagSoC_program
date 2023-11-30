@@ -53,7 +53,7 @@ int main(void)
     ADC120_Init();
 
     UART_SendString(LOVAGSOC_LOGO);
-    printf("Version: development v%d.%d%d.\n\n\r", 
+    printf("Version: v%d.%d%d.\n\n\r", 
             (int)((CPU_READ_CSR(CSR_mImpID) >> 16) & 0xFF), 
             (int)((CPU_READ_CSR(CSR_mImpID) >> 8) & 0xFF), 
             (int)(CPU_READ_CSR(CSR_mImpID) & 0xFF));
