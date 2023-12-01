@@ -39,6 +39,11 @@ void SPI_Init(void)
 	SPI->CTRL.bit.CLK_PSC = 50u;
 
 	SPI->CTRL.bit.ALT_CFG = 0u;
+
+	//Interrupt setup
+	PLIC->IPR3.reg = 2u;
+	PLIC->IE.bit.IE3 = 1u;
+	SPI->IR.bit.TXIE = 1u;
 }
 
 /**

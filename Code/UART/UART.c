@@ -22,10 +22,16 @@
 
 void UART_Init(void)
 {
+    //Frame setup.
     UART->CTRL.bit.PAR = 0u;
     UART->CTRL.bit.STOPB = 0u;
     UART->CTRL.bit.DAT_BITS = 3u;
     UART->PSCR.bit.CLK_PSC = 54u;
+
+    //Interrupt setup.
+    PLIC->IPR4.reg = 1u;
+    PLIC->IE.bit.IE4 = 1u;
+    UART->IR.bit.TXIE = 1u;
 
     /** TODO: This doesnt work. Emits garbage, hardware bug... */
     //UART->CTRL.bit.DAT_BITS = 3u;

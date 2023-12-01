@@ -35,6 +35,9 @@ uint32_t milis_count = 0;
 uint32_t successful_startups = 0;
 uint32_t startup_attempts = 0;
 float    success_rate = 0;
+uint32_t uart_tx_cnt = 0;
+uint32_t spi_tx_cnt = 0;
+uint8_t  tim_triggered = 0;
 
 /**
  * @brief The main function.
@@ -50,17 +53,24 @@ int main(void)
     ADC120_Init();
 
     UART_SendString(LOVAGSOC_LOGO);
-    printf("Version: development v%d.%d%d.\n\r", 
+    printf("Version: v%d.%d%d.\n\n\r", 
             (int)((CPU_READ_CSR(CSR_mImpID) >> 16) & 0xFF), 
             (int)((CPU_READ_CSR(CSR_mImpID) >> 8) & 0xFF), 
             (int)(CPU_READ_CSR(CSR_mImpID) & 0xFF));
 
-    milis_count = CPU_Time();
     GPIO->DIR.reg16 = 0xFFFFu;
+
+    PLIC->IPR5.reg = 1u;
+    PLIC->IE.bit.IE5 = 1u;
+    GPT->IR.bit.OVFIE = 1u;
+    GPT->ARR.reg = 10000u;
+    GPT->PSC.reg = 10000u;
 
     DRV8305_ErrorClear();
 
     while(DRV8305_Read(DRV8305_WNWR) != 0);
+
+    GPT->CTRL.bit.EN = 1u;
 
     Motor_DutyCycleSetter(50u);
 
@@ -99,18 +109,46 @@ int main(void)
         success_rate = (float)(100 * successful_startups) / (float)startup_attempts;
         if(Motor_Running())
         {
+            printf("\x1b[A");
             printf("\33[2K");
-            printf("\rStartup success rate is %d,%d percent.", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
+            printf("\rStartup success rate is %d,%d percent.\n", (int)success_rate, (int)((success_rate - (int)success_rate) * 1000));
+            printf("\33[2K");
+            printf("\rNumber of TX frames: UART: %d, SPI: %d.\n", (int)uart_tx_cnt, (int)spi_tx_cnt);
+            printf("\x1b[A");
         }
 
-        while((milis_count + 1000) != CPU_Time())
+        while(!tim_triggered)
         {
             GPIO->STATE.reg16 = CPU_Time();
         }
-        milis_count = CPU_Time();
+        tim_triggered = 0;
         
         GPIO->STATE.reg16 = ADC120_Read(ADC120_Channel3);
     }
 
     return 0;
+}
+
+__attribute__ ((interrupt ("machine"))) void UART_IRQHandler(void)
+{
+    UART->IR.bit.TXIP = 1u;
+    uart_tx_cnt++;
+}
+
+__attribute__ ((interrupt ("machine"))) void SPI_IRQHandler(void)
+{
+    SPI->IR.bit.TXIP = 1u;
+    spi_tx_cnt++;
+}
+
+__attribute__ ((interrupt ("machine"))) void MotVez_IRQHandler(void)
+{
+    MOTVEZ->IR.bit.STALLIP = 1u;
+    printf("\x1B[31m""\tSTALL""\x1b[0m");
+}
+
+__attribute__ ((interrupt ("machine"))) void GPT_IRQHandler(void)
+{
+    GPT->IR.bit.OVFIP = 1u;
+    tim_triggered = 1;
 }

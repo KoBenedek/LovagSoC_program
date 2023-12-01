@@ -31,16 +31,17 @@ void Motor_Init(void)
 
     MOTVEZ->CCONR1.bit.MOT_EN = 0u;
 
-    MOTVEZ->CCONR1.bit.COAST_LOCK_CNT = 2u;
+    MOTVEZ->CCONR1.bit.COAST_LOCK_CNT = 3u;
     MOTVEZ->CCONR2.bit.COMM_TIM_PSC = 20u;
-    MOTVEZ->CCONR2.bit.DEMAG_PERIOD = 4u;
+    //MOTVEZ->CCONR2.bit.DEMAG_PERIOD = 4u;
     MOTVEZ->OLRR1.bit.OL_RAMP_CONST = 4u;
     MOTVEZ->OLRR1.bit.OL_RAMP_FINAL = 4000u;
     MOTVEZ->OLRR2.bit.OL_RAMP_START = 20000u;
     MOTVEZ->OLRR3.bit.COAST_LOCK_PR = 15000u;
     MOTVEZ->PDR.bit.BEMF_FILT_CYCLES = 10u;
     MOTVEZ->PDR.bit.BEMF_FILT_EN = 1u;
-    MOTVEZ->PDR.bit.DEMAG_EN = 0u;
+    MOTVEZ->PDR.bit.DEMAG_EN = 1u;
+    MOTVEZ->PDR.bit.MASK_EN = 1u;
     MOTVEZ->PDR.bit.PWM_SYNC = 2u;
     MOTVEZ->PWMCR.bit.PWM_DC = 40u;
     MOTVEZ->PWMCR.bit.PWM_INT_GEN = 1u;
@@ -54,6 +55,11 @@ void Motor_Init(void)
     MOTVEZ->OCR.bit.HS_O_POL = 1u;
     MOTVEZ->OCR.bit.LS_O_POL = 1u;
     MOTVEZ->OCR.bit.HIGH_Z_O = 0u;
+
+    //Interrupt setup.
+    PLIC->IPR2.reg = 1u;
+    PLIC->IE.bit.IE2 = 1u;
+    MOTVEZ->IR.bit.STALLIE = 1u;
 
     //Enable the inverter circuit.
     GPIO->STATE.bit.PIN20 = 0u;
